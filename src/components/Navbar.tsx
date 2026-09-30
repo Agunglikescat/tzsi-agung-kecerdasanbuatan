@@ -53,9 +53,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   // Primary top-right quick navigation requested by user
   const primaryMenuItems: MenuItem[] = [
     { id: 'hero', label: 'Judul', shortLabel: 'Judul', icon: BookOpen, tooltip: 'Halaman Utama & Judul' },
-    { id: 'konsep', label: 'Gambar 1', shortLabel: 'Gambar 1', icon: Sparkles, badge: 'Konsep AI', tooltip: 'Gambar 1: Konsep Dasar AI & Definisi IBM' },
-    { id: 'ruang-lingkup', label: 'Gambar 2', shortLabel: 'Gambar 2', icon: Layers, badge: 'Ruang Lingkup', tooltip: 'Gambar 2: 7 Cabang Ruang Lingkup AI' },
-    { id: 'sejarah', label: 'Gambar 3', shortLabel: 'Gambar 3', icon: History, badge: 'Sejarah AI', tooltip: 'Gambar 3: Linimasa Sejarah AI 1956-2026' },
+    { id: 'konsep', label: 'Konsep', shortLabel: 'Konsep', icon: Sparkles, badge: 'Konsep AI', tooltip: 'Konsep Dasar AI & Definisi IBM' },
+    { id: 'ruang-lingkup', label: 'Ruang Lingkup', shortLabel: 'Ruang Lingkup', icon: Layers, badge: 'Ruang Lingkup', tooltip: '7 Cabang Ruang Lingkup AI' },
+    { id: 'sejarah', label: 'Sejarah', shortLabel: 'Sejarah', icon: History, badge: 'Sejarah AI', tooltip: 'Linimasa Sejarah AI 1956-2026' },
     { id: 'taksonomi', label: 'AI vs ML', shortLabel: 'AI vs ML', icon: GitFork, badge: 'Taksonomi', tooltip: 'Perbandingan AI vs Machine Learning' }
   ];
 
@@ -97,12 +97,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             </div>
 
-            {/* ============================================================== */}
-            {/* TOP-RIGHT MENU (Sesuai Permintaan User: untuk judul, gambar 1, 2, 3) */}
-            {/* ============================================================== */}
+            {/* TOP-RIGHT MENU */}
             <div className="flex items-center gap-1.5 sm:gap-2">
-              
-              {/* PC Desktop Menu: Dedicated Top-Right Bar for Judul, Gambar 1, 2, 3, AI vs ML */}
               <nav className="hidden lg:flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-700/80 shadow-inner">
                 {primaryMenuItems.map((item) => {
                   const Icon = item.icon;
@@ -132,7 +128,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 })}
               </nav>
 
-              {/* Extra Links for Desktop (Kuis & Referensi) */}
               <div className="hidden xl:flex items-center gap-1 border-l border-slate-800 pl-2">
                 {secondaryNavItems.map((item) => {
                   const Icon = item.icon;
@@ -152,7 +147,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 })}
               </div>
 
-              {/* Search Button */}
               <button
                 onClick={onOpenSearch}
                 aria-label="Cari Materi"
@@ -161,12 +155,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 <Search className="w-3.5 h-3.5 text-cyan-400" />
                 <span className="hidden sm:inline">Cari</span>
-                <kbd className="hidden sm:inline-block text-[9px] bg-slate-800 text-slate-400 px-1 rounded border border-slate-700">
-                  /
-                </kbd>
+                <kbd className="hidden sm:inline-block text-[9px] bg-slate-800 text-slate-400 px-1 rounded border border-slate-700">/</kbd>
               </button>
 
-              {/* Slide Mode Toggle */}
               <button
                 onClick={onToggleSlideMode}
                 className={`flex items-center gap-1 p-2 sm:px-2.5 sm:py-1.5 rounded-lg text-xs font-semibold border transition-all ${
@@ -177,12 +168,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                 title="Tampilkan replika slide presentasi persis foto"
               >
                 <SlidersHorizontal className="w-3.5 h-3.5 text-amber-400" />
-                <span className="hidden md:inline">
-                  {slideMode ? 'Slide On' : 'Slide'}
-                </span>
+                <span className="hidden md:inline">{slideMode ? 'Slide On' : 'Slide'}</span>
               </button>
 
-              {/* Mobile Hamburger Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="lg:hidden p-2 rounded-lg text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:bg-slate-800 transition-colors"
@@ -190,15 +178,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
-
             </div>
           </div>
         </div>
 
-        {/* ============================================================== */}
-        {/* MOBILE DEDICATED QUICK-JUMP BAR UNDER HEADER */}
-        {/* (Memastikan versi mobile langsung punya menu judul, gambar 1, 2, 3 di atas) */}
-        {/* ============================================================== */}
         <div className="lg:hidden border-t border-slate-800/80 bg-slate-950/95 px-2 py-1.5 overflow-x-auto scrollbar-none flex items-center gap-1.5">
           {primaryMenuItems.map((item) => {
             const isActive = activeSection === item.id;
@@ -220,7 +203,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           })}
         </div>
 
-        {/* Mobile Full Navigation Drawer */}
         {mobileMenuOpen && (
           <div className="lg:hidden bg-slate-900 border-b border-slate-800 px-4 pt-3 pb-6 space-y-2 shadow-2xl animate-in slide-in-from-top-2 duration-200">
             <div className="text-xs font-semibold text-cyan-400 px-2 uppercase tracking-wider flex items-center justify-between">
@@ -249,9 +231,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <Icon className="w-4 h-4 text-cyan-400" />
                       <span>{item.label}</span>
                       {item.badge ? (
-                        <span className="text-[9px] bg-slate-800/80 px-1.5 py-0.5 rounded text-slate-300 border border-slate-700">
-                          {item.badge}
-                        </span>
+                        <span className="text-[9px] bg-slate-800/80 px-1.5 py-0.5 rounded text-slate-300 border border-slate-700">{item.badge}</span>
                       ) : null}
                     </div>
                     <ChevronRight className="w-4 h-4 opacity-50" />
