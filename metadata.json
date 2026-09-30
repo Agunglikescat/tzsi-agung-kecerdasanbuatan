@@ -1,0 +1,6 @@
+{
+  "name": "Portal Pembelajaran Konsep, Ruang Lingkup, dan Sejarah AI",
+  "description": "Website interaktif komprehensif tentang Konsep AI, Ruang Lingkup & Cabang AI, Sejarah Perkembangan AI, serta Taksonomi AI vs Machine Learning bersumber dari literatur valid.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
