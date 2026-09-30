@@ -23,6 +23,12 @@ export interface TimelineMilestone {
   significance: string;
   figuresOrOrg: string[];
   category: 'foundational' | 'downturn' | 'breakthrough' | 'modern';
+  metricHighlight?: {
+    value: string;
+    label: string;
+  };
+  quote?: string;
+  yearNumber: number;
 }
 
 export interface ComparisonItem {
@@ -30,6 +36,7 @@ export interface ComparisonItem {
   artificialIntelligence: string;
   machineLearning: string;
   deepLearning: string;
+  category: 'fundamental' | 'data' | 'system' | 'practical';
 }
 
 export interface QuizQuestion {
@@ -262,6 +269,7 @@ export const AI_BRANCHES: AIBranch[] = [
 export const TIMELINE_DATA: TimelineMilestone[] = [
   {
     year: "1956",
+    yearNumber: 1956,
     period: "Kelahiran Disiplin Ilmu Resmi",
     title: "Konferensi Dartmouth, Kelahiran Istilah \"AI\"",
     bulletPoints: [
@@ -273,10 +281,16 @@ export const TIMELINE_DATA: TimelineMilestone[] = [
     validSource: "McCarthy, J., Minsky, M. L., Rochester, N., & Shannon, C. E. (1955). A Proposal for the Dartmouth Summer Research Project on Artificial Intelligence. AI Magazine, 27(4), 12-14.",
     significance: "Mendirikan fondasi teori, istilah baku 'Artificial Intelligence', serta agenda riset komputasi simbolik selama 2 dekade berikutnya.",
     figuresOrOrg: ["John McCarthy", "Marvin Minsky", "Claude Shannon", "Nathaniel Rochester", "Dartmouth College"],
-    category: "foundational"
+    category: "foundational",
+    metricHighlight: {
+      value: "8 Minggu",
+      label: "Durasi Konferensi Sejarah Dartmouth"
+    },
+    quote: "Every aspect of learning or any other feature of intelligence can in principle be so precisely described that a machine can be made to simulate it."
   },
   {
     year: "1974–1993",
+    yearNumber: 1974,
     period: "Musim Dingin Riset & Evaluasi Realitas",
     title: "Era AI Winter (Musim Dingin AI)",
     bulletPoints: [
@@ -288,10 +302,16 @@ export const TIMELINE_DATA: TimelineMilestone[] = [
     validSource: "Lighthill, J. (1973). 'Artificial Intelligence: A General Survey'. Science Research Council Report. & Crevier, D. (1993). 'AI: The Tumultuous Search for Artificial Intelligence'.",
     significance: "Menjadi pelajaran epistemologis terpenting dalam sejarah komputasi agar tidak membesar-besarkan klaim (hype) tanpa fondasi matematis dan kapasitas perangkat keras yang memadai.",
     figuresOrOrg: ["Sir James Lighthill", "DARPA", "Mansfield Amendment", "Komunitas Riset Simbolik"],
-    category: "downturn"
+    category: "downturn",
+    metricHighlight: {
+      value: "±20 Tahun",
+      label: "Periode Evaluasi & Defisit Pendanaan Riset"
+    },
+    quote: "In no part of the field have the discoveries made so far produced the major impact that was then promised."
   },
   {
     year: "1997",
+    yearNumber: 1997,
     period: "Kemenangan Komputasi Simbolik & Paralel",
     title: "Deep Blue Mengalahkan Kasparov",
     bulletPoints: [
@@ -303,10 +323,16 @@ export const TIMELINE_DATA: TimelineMilestone[] = [
     validSource: "Campbell, M., Hoane, A. J., & Hsu, F. H. (2002). 'Deep Blue'. Artificial Intelligence Journal, 134(1-2), 57-83. IBM Research Archives.",
     significance: "Meruntuhkan mitos bahwa intuisi permainan strategi kompleks hanya milik otak manusia, membuktikan bahwa komputasi paralel masif mampu menundukkan kecerdasan taktis manusia terbaik.",
     figuresOrOrg: ["IBM Research", "Feng-hsiung Hsu", "Murray Campbell", "Garry Kasparov"],
-    category: "breakthrough"
+    category: "breakthrough",
+    metricHighlight: {
+      value: "200 Juta",
+      label: "Posisi Papan Catur Dievaluasi / Detik"
+    },
+    quote: "For the first time in history, a reigning world chess champion was defeated by a computer system under tournament conditions."
   },
   {
     year: "2012",
+    yearNumber: 2012,
     period: "Revolusi Jaringan Saraf Tiruan & GPU",
     title: "AlexNet, Ledakan Deep Learning",
     bulletPoints: [
@@ -318,10 +344,16 @@ export const TIMELINE_DATA: TimelineMilestone[] = [
     validSource: "Krizhevsky, A., Sutskever, I., & Hinton, G. E. (2012). 'ImageNet Classification with Deep Convolutional Neural Networks'. Advances in Neural Information Processing Systems (NeurIPS 2012), 25, 1097-1105.",
     significance: "Mengakhiri dominasi algoritma manual klasik, menyalakan revolusi Deep Learning modern global, dan memicu investasi triliunan dolar di sektor AI.",
     figuresOrOrg: ["Alex Krizhevsky", "Ilya Sutskever", "Geoffrey Hinton", "ImageNet (Fei-Fei Li)", "NVIDIA"],
-    category: "breakthrough"
+    category: "breakthrough",
+    metricHighlight: {
+      value: "15.3% Error",
+      label: "Top-5 Error ImageNet (Turun Drastis dari 26.2%)"
+    },
+    quote: "Our network achieves top-1 and top-5 error rates of 37.5% and 15.3% which is considerably better than previous state-of-the-art."
   },
   {
     year: "2022",
+    yearNumber: 2022,
     period: "Demokratisasi Generative AI & Konsumen Global",
     title: "ChatGPT Diluncurkan",
     bulletPoints: [
@@ -333,10 +365,16 @@ export const TIMELINE_DATA: TimelineMilestone[] = [
     validSource: "OpenAI. (2022). 'Introducing ChatGPT'. OpenAI Research Blog. & UBS Investment Bank. (Feb 2023). 'ChatGPT Consumer Adoption Trajectory Report'.",
     significance: "Mengubah persepsi dunia dari AI sebagai instrumen laboratorium sains menjadi perkakas produktivitas sehari-hari yang dapat diakses oleh siapa saja di muka bumi.",
     figuresOrOrg: ["OpenAI", "Sam Altman", "Greg Brockman", "Ilya Sutskever"],
-    category: "modern"
+    category: "modern",
+    metricHighlight: {
+      value: "100 Juta",
+      label: "Pengguna Aktif Hanya dalam 64 Hari"
+    },
+    quote: "ChatGPT is trained using Reinforcement Learning from Human Feedback (RLHF) to make the model safer and more capable."
   },
   {
     year: "2024–2026",
+    yearNumber: 2024,
     period: "Rekognisi Tertinggi Sains Dunia & Sistem Otonom",
     title: "Nobel Prize & Era AI Agents",
     bulletPoints: [
@@ -348,52 +386,71 @@ export const TIMELINE_DATA: TimelineMilestone[] = [
     validSource: "The Nobel Prize Organization. (Oct 2024). Press releases: 'The Nobel Prize in Physics 2024' & 'The Nobel Prize in Chemistry 2024'. & Google DeepMind Research (AlphaFold3, 2024).",
     significance: "Kecerdasan Buatan resmi diakui sebagai katalisator revolusi sains fundamental dunia dan memasuki tahap evolusi agen cerdas mandiri (action-oriented intelligence).",
     figuresOrOrg: ["Geoffrey Hinton", "John Hopfield", "Demis Hassabis", "John Jumper", "Google DeepMind", "Komite Nobel"],
-    category: "modern"
+    category: "modern",
+    metricHighlight: {
+      value: "200 Juta+",
+      label: "Struktur Protein 3D Terpecahkan (AlphaFold)"
+    },
+    quote: "For foundational discoveries that enable machine learning with artificial neural networks, and for protein structure prediction."
   }
 ];
 
 export const TAXONOMY_COMPARISON: ComparisonItem[] = [
   {
     attribute: "Definisi Konseptual",
-    artificialIntelligence: "Payung disiplin ilmu komprehensif untuk menciptakan mesin atau perangkat lunak cerdas yang mampu meniru perilaku kognitif manusia.",
-    machineLearning: "Sub-himpunan AI yang berfokus pada algoritma statistik yang mempelajari pola dari data masa lalu tanpa instruksi eksplisit aturan.",
-    deepLearning: "Sub-himpunan ML yang memanfaatkan Jaringan Saraf Tiruan berlapis banyak (Deep Neural Networks) untuk mengekstrak fitur otomatis dari data berskala besar."
+    artificialIntelligence: "Payung disiplin ilmu induk komprehensif untuk menciptakan entitas komputasi yang mampu meniru perilaku cerdas manusia (penalaran, persepsi, sintesis logika).",
+    machineLearning: "Sub-himpunan AI yang berfokus pada algoritma matematis-statistik yang secara otomatis mempelajari pola dari kumpulan data masa lalu tanpa diprogram secara eksplisit.",
+    deepLearning: "Sub-himpunan khusus Machine Learning yang memanfaatkan Jaringan Saraf Tiruan berlapis dalam (Deep Neural Networks) untuk mengekstrak fitur abstrak bertingkat secara otomatis.",
+    category: "fundamental"
   },
   {
-    attribute: "Pendekatan Logika & Aturan",
-    artificialIntelligence: "Bisa berbasis logika aturan tetap (If-Then, Pohon Keputusan, Inferensi Simbolik) maupun berbasis data adaptif.",
-    machineLearning: "Murni berbasis statistik probabilistik dan optimasi fungsi loss dari sampel data pelatihan (data-driven).",
-    deepLearning: "Representasi hierarkis non-linear bertingkat dari fitur primitif menuju konsep abstrak tinggi melalui tensor multi-lapisan."
+    attribute: "Paradigma Pemrograman & Logika",
+    artificialIntelligence: "Dapat menggunakan logika aturan manual kaku (IF-THEN, Mesin Inferensi Simbolik, Tree Search) atau berbasis pembelajaran data.",
+    machineLearning: "Murni berbasis pembelajaran statistik probabilistik dan minimisasi fungsi objektif/loss dari data latih (data-driven learning).",
+    deepLearning: "Representasi tensor hierarkis non-linear berlapis-lapis (Backpropagation, konvolusi, mekanisme self-attention).",
+    category: "fundamental"
   },
   {
-    attribute: "Kebutuhan Data (Data Volume)",
-    artificialIntelligence: "Tidak selalu membutuhkan data besar (misal sistem pakar aturan hanya butuh basis aturan logika dari wawancara ahli).",
-    machineLearning: "Membutuhkan ratusan hingga puluhan ribu sampel data terstruktur untuk konvergensi model yang stabil.",
-    deepLearning: "Sangat lapar data (data hungry); membutuhkan jutaan data berdimensi tinggi (gambar, teks, audio) agar tidak mengalami overfitting."
+    attribute: "Kebutuhan Volume Data",
+    artificialIntelligence: "Tidak selalu membutuhkan data besar; sistem pakar rule-based hanya butuh puluhan aturan logika terstruktur dari pakar manusia.",
+    machineLearning: "Membutuhkan data terstruktur dalam jumlah ratusan hingga puluhan ribu baris data tabel berfitur jelas untuk konvergensi model.",
+    deepLearning: "Sangat 'lapar data' (data-hungry); memerlukan jutaan sampel data mentah berdimensi tinggi (gambar, audio, teks token) agar tidak overfitting.",
+    category: "data"
   },
   {
-    attribute: "Ketergantungan Rekayasa Fitur (Feature Engineering)",
-    artificialIntelligence: "Dirancang secara manual oleh manusia / pakar logika domain.",
-    machineLearning: "Sangat bergantung pada feature engineering manual (ahli data harus memilih fitur mana yang relevan sebelum training).",
-    deepLearning: "Feature representation learning otomatis; jaringan saraf mempelajari fitur representatif terbaik langsung dari data mentah."
+    attribute: "Intervensi Rekayasa Fitur (Feature Engineering)",
+    artificialIntelligence: "Dirancang secara manual oleh manusia / pakar logika sistem informasi.",
+    machineLearning: "Sangat bergantung pada keahlian manusia (data scientist) dalam menyeleksi, mentransformasi, dan mengekstrak fitur variabel sebelum pelatihan.",
+    deepLearning: "Feature representation learning otomatis; neuron lapisan tersembunyi mempelajari pola dari primitif (tepi/frekuensi) hingga semantik tinggi secara mandiri.",
+    category: "data"
   },
   {
-    attribute: "Kebutuhan Perangkat Keras",
-    artificialIntelligence: "Dapat berjalan di CPU standar komputer biasa.",
-    machineLearning: "Cukup optimal pada CPU multi-core atau GPU entry-level untuk komputasi matriks umum.",
-    deepLearning: "Wajib menggunakan akselerator komputasi khusus (GPU Tensor Core, Google TPU) untuk jutaan hingga miliaran parameter."
+    attribute: "Algoritma & Arsitektur Utama",
+    artificialIntelligence: "Algoritma Pencarian A*, Minimax, Logika Fuzzy, Sistem Pakar Forward/Backward Chaining, Rule Engines.",
+    machineLearning: "Regresi Linier & Logistik, Support Vector Machine (SVM), Decision Tree, Random Forest, K-Means, XGBoost, Naive Bayes.",
+    deepLearning: "Convolutional Neural Network (CNN), Transformer (GPT, BERT, Gemini), Recurrent Neural Network (LSTM), Autoencoders, GANs, Diffusion.",
+    category: "system"
   },
   {
-    attribute: "Interpretabilitas Model",
-    artificialIntelligence: "Tinggi pada sistem simbolik (White-Box, alur logika pohon aturan dapat ditelusuri baris per baris).",
-    machineLearning: "Sedang; model seperti Linear Regression atau Decision Tree mudah diinterpretasikan, sedangkan Random Forest lebih kompleks.",
-    deepLearning: "Cenderung 'Black-Box'; sangat sulit menjelaskan secara pasti kontribusi spesifik bobot neuron individual terhadap output akhir."
+    attribute: "Kebutuhan Perangkat Keras Komputasi",
+    artificialIntelligence: "Dapat berjalan mulus di CPU biasa dengan konsumsi memori ringan.",
+    machineLearning: "Optimal pada CPU multi-core modern atau GPU entry-level untuk operasi matriks standar.",
+    deepLearning: "Wajib menggunakan akselerator komputasi khusus (NVIDIA GPU Tensor Cores, Google Cloud TPU) untuk pelatihan ratusan miliar bobot matriks.",
+    category: "system"
   },
   {
-    attribute: "Contoh Nyata Teknologi",
-    artificialIntelligence: "Sistem pengatur lampu lalu lintas pintar berbasis sensor, Algoritma A* Pathfinding dalam game, Chatbot ELIZA.",
-    machineLearning: "Pendeteksi transaksi kartu kredit mencurigakan (Fraud Detection), Filter Spam email, Prediksi churn nasabah.",
-    deepLearning: "Sistem mobil tanpa sopir (Waymo), LLM ChatGPT/Gemini, AI restorasi rekaman suara, AlphaFold."
+    attribute: "Interpretabilitas Model (Transparansi)",
+    artificialIntelligence: "Sangat tinggi pada sistem simbolik (White-Box); keputusan dapat dilacak jejak auditnya per baris logika inferensi.",
+    machineLearning: "Tergantung model; model linier dan pohon keputusan mudah diinterpretasikan, sedangkan model ensemble membutuhkan SHAP/LIME (Gray-Box).",
+    deepLearning: "Cenderung 'Black-Box'; sangat rumit menjelaskan secara analitis mengapa kombinasi jutaan bobot non-linear menghasilkan keputusan tertentu.",
+    category: "practical"
+  },
+  {
+    attribute: "Contoh Kasus Nyata di Industri",
+    artificialIntelligence: "Pengatur siklus lampu lalu lintas cerdas, Mesin Catur Deep Blue (1997), Sistem Pakar Regulasi Pajak, NPC game klasik.",
+    machineLearning: "Pendeteksi transaksi fraud kartu kredit, Filter spam Gmail, Prediksi harga real estate, Sistem rekomendasi belanja e-commerce.",
+    deepLearning: "Mobil otonom Waymo/Tesla, Large Language Models (ChatGPT, Gemini), Deteksi kanker pada citra radiologi MRI, AlphaFold prediksi protein.",
+    category: "practical"
   }
 ];
 
@@ -401,7 +458,7 @@ export const TAXONOMY_LEVELS = [
   {
     name: "Artificial Narrow Intelligence (ANI)",
     alias: "Weak AI (AI Sempit)",
-    status: "Sudah Tercapai & Beroperasi Saat Ini",
+    status: "Sudah Beroperasi Penuh Saat Ini",
     desc: "AI yang dirancang dan dilatih secara spesifik untuk menyelesaikan satu tugas tunggal tertentu dengan tingkat kecakapan menyamai atau melampaui manusia. Sistem ini tidak memiliki kesadaran, kehendak diri, ataupun kemampuan mentransfer pengetahuannya ke ranah di luar keahliannya.",
     examples: ["Sistem Catur Deep Blue", "Pengenalan Wajah Apple FaceID", "Sistem Rekomendasi Spotify", "Model Bahasa Large Language Models (LLM)"]
   },
@@ -549,5 +606,15 @@ export const REFERENCES_LIST: ReferenceItem[] = [
     type: "Award Announcement",
     urlOrDoi: "nobelprize.org (Physics 2024 & Chemistry 2024)",
     relevance: "Pengakuan saintifik tertinggi dunia atas machine learning (Hopfield & Hinton) dan penerapan AI dalam penemuan struktur biokimia protein (AlphaFold oleh Hassabis & Jumper)."
+  },
+  {
+    id: "ref-7",
+    title: "Machine Learning (McGraw-Hill Series in Computer Science)",
+    authors: "Tom M. Mitchell (Carnegie Mellon University)",
+    year: "1997",
+    publisher: "McGraw-Hill",
+    type: "Book",
+    urlOrDoi: "ISBN: 978-0070428072",
+    relevance: "Definisi matematis standar pertama tentang proses pembelajaran mesin: 'A computer program is said to learn from experience E with respect to some class of tasks T and performance measure P, if its performance at tasks in T, as measured by P, improves with experience E.'"
   }
 ];

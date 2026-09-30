@@ -11,8 +11,18 @@ import {
   Sparkles,
   Search,
   SlidersHorizontal,
-  ChevronRight
+  ChevronRight,
+  Compass
 } from 'lucide-react';
+
+interface MenuItem {
+  id: string;
+  label: string;
+  shortLabel?: string;
+  icon: React.ComponentType<{ className?: string }>;
+  badge?: string;
+  tooltip?: string;
+}
 
 interface NavbarProps {
   activeSection: string;
@@ -34,18 +44,22 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 15);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navItems = [
-    { id: 'hero', label: 'Beranda', icon: BookOpen },
-    { id: 'konsep', label: 'Gambar 1: Konsep AI', icon: Sparkles, badge: 'Gbr 1' },
-    { id: 'ruang-lingkup', label: 'Gambar 2: Ruang Lingkup', icon: Layers, badge: 'Gbr 2' },
-    { id: 'sejarah', label: 'Gambar 3: Sejarah AI', icon: History, badge: 'Gbr 3' },
-    { id: 'taksonomi', label: 'AI vs ML (Taksonomi)', icon: GitFork },
+  // Primary top-right quick navigation requested by user
+  const primaryMenuItems: MenuItem[] = [
+    { id: 'hero', label: 'Judul', shortLabel: 'Judul', icon: BookOpen, tooltip: 'Halaman Utama & Judul' },
+    { id: 'konsep', label: 'Gambar 1', shortLabel: 'Gambar 1', icon: Sparkles, badge: 'Konsep AI', tooltip: 'Gambar 1: Konsep Dasar AI & Definisi IBM' },
+    { id: 'ruang-lingkup', label: 'Gambar 2', shortLabel: 'Gambar 2', icon: Layers, badge: 'Ruang Lingkup', tooltip: 'Gambar 2: 7 Cabang Ruang Lingkup AI' },
+    { id: 'sejarah', label: 'Gambar 3', shortLabel: 'Gambar 3', icon: History, badge: 'Sejarah AI', tooltip: 'Gambar 3: Linimasa Sejarah AI 1956-2026' },
+    { id: 'taksonomi', label: 'AI vs ML', shortLabel: 'AI vs ML', icon: GitFork, badge: 'Taksonomi', tooltip: 'Perbandingan AI vs Machine Learning' }
+  ];
+
+  const secondaryNavItems: MenuItem[] = [
     { id: 'kuis', label: 'Uji Pemahaman', icon: HelpCircle },
     { id: 'referensi', label: 'Sumber Valid', icon: FileText }
   ];
@@ -55,142 +69,204 @@ export const Navbar: React.FC<NavbarProps> = ({
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'bg-slate-900/90 backdrop-blur-md shadow-lg shadow-black/20 border-b border-slate-800'
-            : 'bg-slate-950/80 backdrop-blur-sm border-b border-slate-800/50'
+            ? 'bg-slate-950/95 backdrop-blur-md shadow-xl shadow-black/40 border-b border-slate-800'
+            : 'bg-slate-950/90 backdrop-blur-sm border-b border-slate-800/60'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 sm:h-20">
-            {/* Logo & Brand */}
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 sm:h-20 gap-2">
+            
+            {/* Logo & Brand Left */}
             <div 
               onClick={() => onNavigate('hero')}
-              className="flex items-center gap-3 cursor-pointer group"
+              className="flex items-center gap-2.5 cursor-pointer group shrink-0"
             >
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 flex items-center justify-center shadow-md shadow-blue-500/25 group-hover:scale-105 transition-transform">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 flex items-center justify-center shadow-md shadow-blue-500/25 group-hover:scale-105 transition-transform">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
               <div>
-                <span className="text-lg font-bold text-white tracking-tight flex items-center gap-2">
+                <span className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-1.5">
                   Portal Edukasi AI
-                  <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30">
+                  <span className="hidden md:inline-block text-[9px] uppercase font-bold px-1.5 py-0.5 rounded bg-blue-500/20 text-cyan-300 border border-blue-400/30">
                     Akademik
                   </span>
                 </span>
-                <p className="text-xs text-slate-400 hidden sm:block">
+                <p className="text-[11px] text-slate-400 hidden xl:block leading-tight">
                   Konsep • Ruang Lingkup • Sejarah • Taksonomi
                 </p>
               </div>
             </div>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-1">
-              {navItems.map((item) => {
+            {/* ============================================================== */}
+            {/* TOP-RIGHT MENU (Sesuai Permintaan User: untuk judul, gambar 1, 2, 3) */}
+            {/* ============================================================== */}
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              
+              {/* PC Desktop Menu: Dedicated Top-Right Bar for Judul, Gambar 1, 2, 3, AI vs ML */}
+              <nav className="hidden lg:flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-700/80 shadow-inner">
+                {primaryMenuItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = activeSection === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => onNavigate(item.id)}
+                      title={item.tooltip}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all relative ${
+                        isActive
+                          ? 'bg-blue-600 text-white shadow-md shadow-blue-600/40 ring-1 ring-blue-400/50'
+                          : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                      }`}
+                    >
+                      <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-cyan-400'}`} />
+                      <span>{item.label}</span>
+                      {item.badge && (
+                        <span className={`text-[9px] px-1 rounded font-normal ${
+                          isActive ? 'bg-blue-700 text-blue-100' : 'bg-slate-800 text-slate-400'
+                        }`}>
+                          {item.badge}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </nav>
+
+              {/* Extra Links for Desktop (Kuis & Referensi) */}
+              <div className="hidden xl:flex items-center gap-1 border-l border-slate-800 pl-2">
+                {secondaryNavItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = activeSection === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => onNavigate(item.id)}
+                      className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                        isActive ? 'text-cyan-300 font-semibold' : 'text-slate-400 hover:text-slate-200'
+                      }`}
+                    >
+                      <Icon className="w-3 h-3" />
+                      <span>{item.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Search Button */}
+              <button
+                onClick={onOpenSearch}
+                aria-label="Cari Materi"
+                className="p-2 sm:px-2.5 sm:py-1.5 rounded-lg text-slate-300 bg-slate-900 hover:bg-slate-800 hover:text-white border border-slate-700 transition-colors flex items-center gap-1.5 text-xs"
+                title="Cari materi AI (Tekan /)..."
+              >
+                <Search className="w-3.5 h-3.5 text-cyan-400" />
+                <span className="hidden sm:inline">Cari</span>
+                <kbd className="hidden sm:inline-block text-[9px] bg-slate-800 text-slate-400 px-1 rounded border border-slate-700">
+                  /
+                </kbd>
+              </button>
+
+              {/* Slide Mode Toggle */}
+              <button
+                onClick={onToggleSlideMode}
+                className={`flex items-center gap-1 p-2 sm:px-2.5 sm:py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                  slideMode 
+                    ? 'bg-amber-500/20 text-amber-300 border-amber-500/50 shadow-sm shadow-amber-500/20' 
+                    : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white hover:bg-slate-800'
+                }`}
+                title="Tampilkan replika slide presentasi persis foto"
+              >
+                <SlidersHorizontal className="w-3.5 h-3.5 text-amber-400" />
+                <span className="hidden md:inline">
+                  {slideMode ? 'Slide On' : 'Slide'}
+                </span>
+              </button>
+
+              {/* Mobile Hamburger Button */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="lg:hidden p-2 rounded-lg text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:bg-slate-800 transition-colors"
+                aria-label="Toggle Menu"
+              >
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+
+            </div>
+          </div>
+        </div>
+
+        {/* ============================================================== */}
+        {/* MOBILE DEDICATED QUICK-JUMP BAR UNDER HEADER */}
+        {/* (Memastikan versi mobile langsung punya menu judul, gambar 1, 2, 3 di atas) */}
+        {/* ============================================================== */}
+        <div className="lg:hidden border-t border-slate-800/80 bg-slate-950/95 px-2 py-1.5 overflow-x-auto scrollbar-none flex items-center gap-1.5">
+          {primaryMenuItems.map((item) => {
+            const isActive = activeSection === item.id;
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.id}
+                onClick={() => onNavigate(item.id)}
+                className={`shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all border ${
+                  isActive
+                    ? 'bg-blue-600 text-white border-blue-400 shadow-sm shadow-blue-500/30'
+                    : 'bg-slate-900 text-slate-300 border-slate-800 hover:bg-slate-800'
+                }`}
+              >
+                <Icon className="w-3 h-3 text-cyan-400" />
+                <span>{item.shortLabel}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Mobile Full Navigation Drawer */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden bg-slate-900 border-b border-slate-800 px-4 pt-3 pb-6 space-y-2 shadow-2xl animate-in slide-in-from-top-2 duration-200">
+            <div className="text-xs font-semibold text-cyan-400 px-2 uppercase tracking-wider flex items-center justify-between">
+              <span>Menu Materi Lengkap</span>
+              <span className="text-[10px] text-slate-400 normal-case">PC & Mobile Optimized</span>
+            </div>
+
+            <div className="space-y-1">
+              {[...primaryMenuItems, ...secondaryNavItems].map((item) => {
                 const Icon = item.icon;
                 const isActive = activeSection === item.id;
                 return (
                   <button
                     key={item.id}
-                    onClick={() => onNavigate(item.id)}
-                    className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                    onClick={() => {
+                      onNavigate(item.id);
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
                       isActive
-                        ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/30'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                        ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-900/50'
+                        : 'text-slate-300 hover:bg-slate-800 hover:text-white'
                     }`}
                   >
-                    <Icon className="w-3.5 h-3.5" />
-                    <span>{item.label}</span>
-                    {item.badge && (
-                      <span className={`text-[10px] px-1.5 py-0.2 rounded font-semibold ${
-                        isActive ? 'bg-blue-800 text-blue-100' : 'bg-slate-800 text-slate-400'
-                      }`}>
-                        {item.badge}
-                      </span>
-                    )}
+                    <div className="flex items-center gap-2.5">
+                      <Icon className="w-4 h-4 text-cyan-400" />
+                      <span>{item.label}</span>
+                      {item.badge ? (
+                        <span className="text-[9px] bg-slate-800/80 px-1.5 py-0.5 rounded text-slate-300 border border-slate-700">
+                          {item.badge}
+                        </span>
+                      ) : null}
+                    </div>
+                    <ChevronRight className="w-4 h-4 opacity-50" />
                   </button>
                 );
               })}
-            </nav>
-
-            {/* Actions: Search & Slide Mode Toggle */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={onOpenSearch}
-                aria-label="Cari Materi"
-                className="p-2 sm:px-3 sm:py-2 rounded-lg text-slate-300 bg-slate-800/70 hover:bg-slate-800 hover:text-white border border-slate-700/60 transition-colors flex items-center gap-2 text-xs"
-                title="Cari materi AI..."
-              >
-                <Search className="w-4 h-4 text-cyan-400" />
-                <span className="hidden sm:inline">Cari...</span>
-                <kbd className="hidden sm:inline-block text-[10px] bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded border border-slate-600">
-                  /
-                </kbd>
-              </button>
-
-              <button
-                onClick={onToggleSlideMode}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold border transition-all ${
-                  slideMode 
-                    ? 'bg-amber-500/20 text-amber-300 border-amber-500/50 shadow-sm shadow-amber-500/20' 
-                    : 'bg-slate-800/70 text-slate-300 border-slate-700/60 hover:text-white hover:bg-slate-800'
-                }`}
-                title="Beralih antara Mode Slide Persis Foto atau Mode Detail Lengkap"
-              >
-                <SlidersHorizontal className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">
-                  {slideMode ? 'Mode Slide: Aktif' : 'Mode Slide'}
-                </span>
-              </button>
-
-              {/* Mobile hamburger */}
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
-                aria-label="Toggle Menu"
-              >
-                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
             </div>
-          </div>
-        </div>
 
-        {/* Mobile Navigation Drawer */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-6 space-y-1 shadow-2xl animate-in slide-in-from-top-2 duration-200">
-            <div className="text-xs font-semibold text-slate-400 px-3 py-1 uppercase tracking-wider">
-              Daftar Navigasi Modul
-            </div>
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = activeSection === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => {
-                    onNavigate(item.id);
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                    isActive
-                      ? 'bg-blue-600 text-white font-semibold'
-                      : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-                  }`}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <Icon className="w-4 h-4" />
-                    <span>{item.label}</span>
-                  </div>
-                  <ChevronRight className="w-4 h-4 opacity-50" />
-                </button>
-              );
-            })}
-
-            <div className="pt-3 border-t border-slate-800 mt-2 flex flex-col gap-2">
+            <div className="pt-2 border-t border-slate-800 flex flex-col gap-2">
               <button
                 onClick={() => {
                   onToggleSlideMode();
                   setMobileMenuOpen(false);
                 }}
-                className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium bg-slate-800 text-amber-300 border border-slate-700"
+                className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-amber-300 border border-slate-700"
               >
                 <span>Tampilan: {slideMode ? 'Mode Slide Sederhana' : 'Mode Pembahasan Lengkap'}</span>
                 <SlidersHorizontal className="w-4 h-4" />
