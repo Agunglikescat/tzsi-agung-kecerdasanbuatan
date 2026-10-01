@@ -9,6 +9,7 @@ import {
   Award,
   BookOpen
 } from 'lucide-react';
+import { AgungLogo } from './AgungLogo';
 
 interface HeroProps {
   onNavigate: (sectionId: string) => void;
@@ -25,8 +26,10 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         {/* Top Tag */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-900/60 border border-blue-500/40 text-blue-200 text-xs font-semibold backdrop-blur-sm shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Kurikulum & Ensiklopedia Kecerdasan Buatan Terpadu</span>
+            <AgungLogo size={20} glow={false} />
+            <span className="font-semibold text-cyan-300">AGUNGPROJECT.ID</span>
+            <span className="text-slate-400">•</span>
+            <span>Kurikulum & Ensiklopedia AI Terpadu</span>
           </div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-xs font-medium">
             <ShieldCheck className="w-3.5 h-3.5" />

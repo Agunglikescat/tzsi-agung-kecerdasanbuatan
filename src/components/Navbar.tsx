@@ -14,6 +14,7 @@ import {
   ChevronRight,
   Compass
 } from 'lucide-react';
+import { AgungLogo } from './AgungLogo';
 
 interface MenuItem {
   id: string;
@@ -50,13 +51,13 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Primary top-right quick navigation requested by user
+  // Primary top-right quick navigation
   const primaryMenuItems: MenuItem[] = [
     { id: 'hero', label: 'Judul', shortLabel: 'Judul', icon: BookOpen, tooltip: 'Halaman Utama & Judul' },
-    { id: 'konsep', label: 'Konsep', shortLabel: 'Konsep', icon: Sparkles, badge: 'Konsep AI', tooltip: 'Konsep Dasar AI & Definisi IBM' },
-    { id: 'ruang-lingkup', label: 'Ruang Lingkup', shortLabel: 'Ruang Lingkup', icon: Layers, badge: 'Ruang Lingkup', tooltip: '7 Cabang Ruang Lingkup AI' },
-    { id: 'sejarah', label: 'Sejarah', shortLabel: 'Sejarah', icon: History, badge: 'Sejarah AI', tooltip: 'Linimasa Sejarah AI 1956-2026' },
-    { id: 'taksonomi', label: 'AI vs ML', shortLabel: 'AI vs ML', icon: GitFork, badge: 'Taksonomi', tooltip: 'Perbandingan AI vs Machine Learning' }
+    { id: 'konsep', label: 'Konsep AI', shortLabel: 'Konsep AI', icon: Sparkles, tooltip: 'Konsep Dasar AI & Definisi IBM' },
+    { id: 'ruang-lingkup', label: 'Ruang Lingkup', shortLabel: 'Ruang Lingkup', icon: Layers, tooltip: '7 Cabang Ruang Lingkup AI' },
+    { id: 'sejarah', label: 'Sejarah AI', shortLabel: 'Sejarah AI', icon: History, tooltip: 'Linimasa Sejarah AI 1956-2026' },
+    { id: 'taksonomi', label: 'AI vs ML', shortLabel: 'AI vs ML', icon: GitFork, tooltip: 'Perbandingan AI vs Machine Learning' }
   ];
 
   const secondaryNavItems: MenuItem[] = [
@@ -76,19 +77,17 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20 gap-2">
             
-            {/* Logo & Brand Left */}
+            {/* Logo & Brand Left with custom AGUNGPROJECT.ID logo adapted to theme */}
             <div 
               onClick={() => onNavigate('hero')}
               className="flex items-center gap-2.5 cursor-pointer group shrink-0"
             >
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 flex items-center justify-center shadow-md shadow-blue-500/25 group-hover:scale-105 transition-transform">
-                <Sparkles className="w-5 h-5 text-white" />
-              </div>
+              <AgungLogo size={40} variant="badge" glow={true} />
               <div>
-                <span className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-1.5">
-                  Portal Edukasi AI
+                <span className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-1.5 group-hover:text-cyan-300 transition-colors">
+                  AGUNGPROJECT<span className="text-cyan-400">.ID</span>
                   <span className="hidden md:inline-block text-[9px] uppercase font-bold px-1.5 py-0.5 rounded bg-blue-500/20 text-cyan-300 border border-blue-400/30">
-                    Akademik
+                    Edukasi AI
                   </span>
                 </span>
                 <p className="text-[11px] text-slate-400 hidden xl:block leading-tight">
@@ -97,8 +96,12 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             </div>
 
-            {/* TOP-RIGHT MENU */}
+            {/* ============================================================== */}
+            {/* TOP-RIGHT MENU (Sesuai Permintaan User: untuk judul, gambar 1, 2, 3) */}
+            {/* ============================================================== */}
             <div className="flex items-center gap-1.5 sm:gap-2">
+              
+              {/* PC Desktop Menu: Dedicated Top-Right Bar for Judul, Gambar 1, 2, 3, AI vs ML */}
               <nav className="hidden lg:flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-700/80 shadow-inner">
                 {primaryMenuItems.map((item) => {
                   const Icon = item.icon;
@@ -128,6 +131,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 })}
               </nav>
 
+              {/* Extra Links for Desktop (Kuis & Referensi) */}
               <div className="hidden xl:flex items-center gap-1 border-l border-slate-800 pl-2">
                 {secondaryNavItems.map((item) => {
                   const Icon = item.icon;
@@ -147,6 +151,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 })}
               </div>
 
+              {/* Search Button */}
               <button
                 onClick={onOpenSearch}
                 aria-label="Cari Materi"
@@ -155,9 +160,12 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 <Search className="w-3.5 h-3.5 text-cyan-400" />
                 <span className="hidden sm:inline">Cari</span>
-                <kbd className="hidden sm:inline-block text-[9px] bg-slate-800 text-slate-400 px-1 rounded border border-slate-700">/</kbd>
+                <kbd className="hidden sm:inline-block text-[9px] bg-slate-800 text-slate-400 px-1 rounded border border-slate-700">
+                  /
+                </kbd>
               </button>
 
+              {/* Slide Mode Toggle */}
               <button
                 onClick={onToggleSlideMode}
                 className={`flex items-center gap-1 p-2 sm:px-2.5 sm:py-1.5 rounded-lg text-xs font-semibold border transition-all ${
@@ -168,9 +176,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                 title="Tampilkan replika slide presentasi persis foto"
               >
                 <SlidersHorizontal className="w-3.5 h-3.5 text-amber-400" />
-                <span className="hidden md:inline">{slideMode ? 'Slide On' : 'Slide'}</span>
+                <span className="hidden md:inline">
+                  {slideMode ? 'Slide On' : 'Slide'}
+                </span>
               </button>
 
+              {/* Mobile Hamburger Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="lg:hidden p-2 rounded-lg text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:bg-slate-800 transition-colors"
@@ -178,10 +189,15 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
+
             </div>
           </div>
         </div>
 
+        {/* ============================================================== */}
+        {/* MOBILE DEDICATED QUICK-JUMP BAR UNDER HEADER */}
+        {/* (Memastikan versi mobile langsung punya menu judul, gambar 1, 2, 3 di atas) */}
+        {/* ============================================================== */}
         <div className="lg:hidden border-t border-slate-800/80 bg-slate-950/95 px-2 py-1.5 overflow-x-auto scrollbar-none flex items-center gap-1.5">
           {primaryMenuItems.map((item) => {
             const isActive = activeSection === item.id;
@@ -203,6 +219,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           })}
         </div>
 
+        {/* Mobile Full Navigation Drawer */}
         {mobileMenuOpen && (
           <div className="lg:hidden bg-slate-900 border-b border-slate-800 px-4 pt-3 pb-6 space-y-2 shadow-2xl animate-in slide-in-from-top-2 duration-200">
             <div className="text-xs font-semibold text-cyan-400 px-2 uppercase tracking-wider flex items-center justify-between">
@@ -231,7 +248,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <Icon className="w-4 h-4 text-cyan-400" />
                       <span>{item.label}</span>
                       {item.badge ? (
-                        <span className="text-[9px] bg-slate-800/80 px-1.5 py-0.5 rounded text-slate-300 border border-slate-700">{item.badge}</span>
+                        <span className="text-[9px] bg-slate-800/80 px-1.5 py-0.5 rounded text-slate-300 border border-slate-700">
+                          {item.badge}
+                        </span>
                       ) : null}
                     </div>
                     <ChevronRight className="w-4 h-4 opacity-50" />

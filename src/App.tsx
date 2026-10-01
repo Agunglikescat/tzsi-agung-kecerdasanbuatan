@@ -163,7 +163,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Sticky Bottom Mini Navigator for Slide 1, 2, 3 on Mobile / Small screens */}
+      {/* Sticky Bottom Mini Navigator on Mobile / Small screens */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 px-3 py-2 flex items-center justify-around shadow-2xl">
         <button
           onClick={() => scrollToSection('konsep')}
@@ -172,7 +172,7 @@ export default function App() {
           }`}
         >
           <Sparkles className="w-4 h-4" />
-          <span>Gbr 1: Konsep</span>
+          <span>Konsep AI</span>
         </button>
 
         <button
@@ -182,7 +182,7 @@ export default function App() {
           }`}
         >
           <Layers className="w-4 h-4" />
-          <span>Gbr 2: Lingkup</span>
+          <span>Ruang Lingkup</span>
         </button>
 
         <button
@@ -192,7 +192,7 @@ export default function App() {
           }`}
         >
           <History className="w-4 h-4" />
-          <span>Gbr 3: Sejarah</span>
+          <span>Sejarah AI</span>
         </button>
 
         <button
