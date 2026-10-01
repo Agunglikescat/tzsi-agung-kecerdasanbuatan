@@ -96,24 +96,25 @@ app.post('/api/chat', async (req, res) => {
       parts: [{ text: userPrompt }]
     });
 
-    // Validate API key
+    // Validate API key (supports modern AQ prefix keys from Google AI Studio)
     const rawApiKey = process.env.GEMINI_API_KEY?.trim().replace(/^["']|["']$/g, '');
     if (!rawApiKey) {
       res.status(500).json({
         error: 'GEMINI_API_KEY belum disetel.',
-        reply: '⚠️ **GEMINI_API_KEY belum terpasang.**\n\nSilakan tambahkan Environment Variable `GEMINI_API_KEY` di file `.env` (atau di Dashboard Vercel: *Settings > Environment Variables*) dengan API key resmi dari https://aistudio.google.com/app/apikey (diawali `AIzaSy...`), lalu lakukan Redeploy.'
+        reply: '⚠️ **GEMINI_API_KEY belum terpasang.**\n\nSilakan tambahkan Environment Variable `GEMINI_API_KEY` di file `.env` (atau di Dashboard Vercel: *Settings > Environment Variables*) dengan API key berawalan `AQ...` dari Google AI Studio, lalu lakukan Redeploy.'
       });
       return;
     }
 
     // Try available Gemini models with graceful fallback
     const candidateModels = ['gemini-2.5-flash', 'gemini-3.8-flash', 'gemini-flash-latest'];
-    let response: any = null;
+    let responseText = '';
     let lastError: any = null;
 
     for (const modelName of candidateModels) {
       try {
-        response = await ai.models.generateContent({
+        // Attempt using @google/genai SDK
+        const response = await ai.models.generateContent({
           model: modelName,
           contents: contents,
           config: {
@@ -123,32 +124,63 @@ app.post('/api/chat', async (req, res) => {
           }
         });
         if (response && response.text) {
+          responseText = response.text;
           break;
         }
       } catch (err: any) {
         lastError = err;
         const msg = err?.message || '';
-        // If it's an auth error (401), stop immediately because no model will work with an invalid key
+
+        // Fallback to direct REST fetch with x-goog-api-key header for AQ. keys
+        try {
+          const directRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-goog-api-key': rawApiKey,
+            },
+            body: JSON.stringify({
+              contents: contents,
+              systemInstruction: {
+                parts: [{ text: SYSTEM_INSTRUCTION }]
+              },
+              generationConfig: {
+                temperature: 0.7,
+                topP: 0.95
+              }
+            })
+          });
+
+          if (directRes.ok) {
+            const data: any = await directRes.json();
+            const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (text) {
+              responseText = text;
+              break;
+            }
+          }
+        } catch {
+          // ignore and proceed to next candidate model
+        }
+
         if (msg.includes('401') || msg.includes('UNAUTHENTICATED') || msg.includes('invalid authentication credentials')) {
           break;
         }
-        // Otherwise continue to next model (e.g. 404 NOT_FOUND or 503)
       }
     }
 
-    if (!response || !response.text) {
+    if (!responseText) {
       throw lastError || new Error('Tidak ada respon dari model Gemini.');
     }
 
-    const replyText = response.text || 'Maaf, saya tidak dapat memproses jawaban saat ini.';
-    res.json({ reply: replyText });
+    res.json({ reply: responseText });
   } catch (error: any) {
     console.error('Error calling Gemini API:', error);
     const errMsg = error?.message || '';
     let userNotice = 'Mohon maaf, terjadi gangguan saat menghubungi layanan AI. Silakan coba beberapa saat lagi.';
 
     if (errMsg.includes('401') || errMsg.includes('UNAUTHENTICATED') || errMsg.includes('invalid authentication credentials')) {
-      userNotice = '⚠️ **API Key Gemini Tidak Valid / Tidak Diizinkan (Error 401)**\n\nKunci API yang digunakan saat ini tidak valid atau telah kedaluwarsa. Pastikan:\n1. Buka [Google AI Studio](https://aistudio.google.com/app/apikey) dan klik **Create API key**.\n2. Salin kunci (yang diawali **`AIzaSy...`**).\n3. Pasang di Vercel: **Settings > Environment Variables > GEMINI_API_KEY** lalu klik **Redeploy**.';
+      userNotice = '⚠️ **API Key Gemini Tidak Valid / Tidak Diizinkan (Error 401)**\n\nKunci API berawalan `AQ...` yang digunakan saat ini belum dapat diverifikasi oleh Google. Pastikan:\n1. Buka [Google AI Studio](https://aistudio.google.com/app/apikey).\n2. Pastikan API key `AQ...` telah dibuat dan aktif.\n3. Pasang di Vercel: **Settings > Environment Variables > GEMINI_API_KEY** lalu klik **Redeploy**.';
     } else if (errMsg.includes('429') || errMsg.includes('RESOURCE_EXHAUSTED')) {
       userNotice = '⏳ Kuota penggunaan API key Gemini telah mencapai batas limit (Rate limit / Quota exceeded). Mohon tunggu 1-2 menit lalu coba kembali.';
     }
