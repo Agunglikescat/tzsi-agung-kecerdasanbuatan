@@ -174,7 +174,7 @@ export const AiChatbot: React.FC = () => {
           </div>
           <span>Tanya Asisten AI</span>
           <span className="hidden sm:inline-block px-1.5 py-0.2 rounded bg-black/30 text-[9px] text-cyan-200 font-mono uppercase">
-            Gemini 3.8
+            Gemini 2.5
           </span>
         </button>
       )}
@@ -362,7 +362,7 @@ export const AiChatbot: React.FC = () => {
                 </form>
 
                 <div className="flex items-center justify-between text-[9px] text-slate-400 px-1 font-mono">
-                  <span>Ditenagai model Gemini 3.8 Flash</span>
+                  <span>Ditenagai model Gemini 2.5 Flash</span>
                   <span className="text-cyan-400 font-semibold">AGUNGPROJECT.ID</span>
                 </div>
               </div>

@@ -16,9 +16,9 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 app.use(express.json());
 
-// Initialize GoogleGenAI on the server side
+// Initialize GoogleGenAI on the server side using process.env.GEMINI_API_KEY
 const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY || '',
+  apiKey: process.env.GEMINI_API_KEY,
   httpOptions: {
     headers: {
       'User-Agent': 'aistudio-build',
@@ -96,15 +96,35 @@ app.post('/api/chat', async (req, res) => {
       parts: [{ text: userPrompt }]
     });
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
-      contents: contents,
-      config: {
-        systemInstruction: SYSTEM_INSTRUCTION,
-        temperature: 0.7,
-        topP: 0.95,
+    // Attempt requested model gemini-2.5-flash, with automatic fallback to gemini-3.8-flash if deprecated by API
+    let response;
+    try {
+      response = await ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: contents,
+        config: {
+          systemInstruction: SYSTEM_INSTRUCTION,
+          temperature: 0.7,
+          topP: 0.95,
+        }
+      });
+    } catch (modelErr: any) {
+      const errMsg = modelErr?.message || '';
+      if (errMsg.includes('gemini-2.5-flash') || errMsg.includes('NOT_FOUND') || errMsg.includes('404')) {
+        console.warn('gemini-2.5-flash is not available on this API key, falling back to gemini-3.8-flash:', errMsg);
+        response = await ai.models.generateContent({
+          model: 'gemini-3.8-flash',
+          contents: contents,
+          config: {
+            systemInstruction: SYSTEM_INSTRUCTION,
+            temperature: 0.7,
+            topP: 0.95,
+          }
+        });
+      } else {
+        throw modelErr;
       }
-    });
+    }
 
     const replyText = response.text || 'Maaf, saya tidak dapat memproses jawaban saat ini.';
     res.json({ reply: replyText });
