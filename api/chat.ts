@@ -93,35 +93,15 @@ export default async function handler(req: any, res: any) {
       parts: [{ text: userPrompt }]
     });
 
-    // Primary model is set to gemini-2.5-flash with safety fallback to gemini-3.8-flash if unavailable
-    let response;
-    try {
-      response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: contents,
-        config: {
-          systemInstruction: SYSTEM_INSTRUCTION,
-          temperature: 0.7,
-          topP: 0.95,
-        }
-      });
-    } catch (modelErr: any) {
-      const errMsg = modelErr?.message || '';
-      if (errMsg.includes('gemini-2.5-flash') || errMsg.includes('NOT_FOUND') || errMsg.includes('404')) {
-        console.warn('gemini-2.5-flash is not available on this API key, falling back to gemini-3.8-flash:', errMsg);
-        response = await ai.models.generateContent({
-          model: 'gemini-3.8-flash',
-          contents: contents,
-          config: {
-            systemInstruction: SYSTEM_INSTRUCTION,
-            temperature: 0.7,
-            topP: 0.95,
-          }
-        });
-      } else {
-        throw modelErr;
+    const response = await ai.models.generateContent({
+      model: 'gemini-1.5-flash',
+      contents: contents,
+      config: {
+        systemInstruction: SYSTEM_INSTRUCTION,
+        temperature: 0.7,
+        topP: 0.95,
       }
-    }
+    });
 
     const replyText = response.text || 'Maaf, saya tidak dapat memproses jawaban saat ini.';
     res.status(200).json({ reply: replyText });
