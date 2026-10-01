@@ -9,6 +9,8 @@ import { QuizSection } from './components/QuizSection';
 import { ReferencesSection } from './components/ReferencesSection';
 import { Footer } from './components/Footer';
 import { SearchModal } from './components/SearchModal';
+import { CosmicParticlesBackground } from './components/CosmicParticlesBackground';
+import { AiChatbot } from './components/AiChatbot';
 import { 
   ArrowUp, 
   Sparkles, 
@@ -84,7 +86,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-950">
+    <div className="min-h-screen bg-[#060814] text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-950 relative overflow-x-hidden">
+      {/* Dynamic Animated Cosmic Particles & Glowing Bokeh Background */}
+      <CosmicParticlesBackground />
+
       {/* Top Navbar */}
       <Navbar
         activeSection={activeSection}
@@ -141,6 +146,9 @@ export default function App() {
 
       {/* Footer */}
       <Footer onNavigate={scrollToSection} />
+
+      {/* Interactive AI Chatbot powered by Gemini API */}
+      <AiChatbot />
 
       {/* Quick Search Modal */}
       <SearchModal

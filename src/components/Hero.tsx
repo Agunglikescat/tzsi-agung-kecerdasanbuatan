@@ -17,9 +17,9 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   return (
-    <section id="hero" className="relative pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-b from-[#0a1120] via-[#0f1d36] to-[#0a1120] text-white overflow-hidden">
+    <section id="hero" className="relative pt-24 pb-16 md:pt-32 md:pb-24 bg-transparent text-white overflow-hidden">
       {/* Background ambient decorative glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-10 right-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

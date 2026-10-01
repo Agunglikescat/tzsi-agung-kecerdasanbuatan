@@ -33,7 +33,7 @@ export const ConceptSection: React.FC<ConceptSectionProps> = ({
   };
 
   return (
-    <section id="konsep" className="py-16 md:py-24 bg-slate-900 border-b border-slate-800 relative scroll-mt-16">
+    <section id="konsep" className="py-16 md:py-24 bg-slate-950/60 backdrop-blur-[2px] border-b border-slate-800/60 relative scroll-mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Navigation Header Badge */}

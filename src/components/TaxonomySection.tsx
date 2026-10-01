@@ -103,7 +103,7 @@ export const TaxonomySection: React.FC<TaxonomySectionProps> = ({ onNavigateToNe
   ];
 
   return (
-    <section id="taksonomi" className="py-16 md:py-24 bg-slate-950 border-b border-slate-800 relative scroll-mt-20">
+    <section id="taksonomi" className="py-16 md:py-24 bg-slate-950/50 backdrop-blur-[2px] border-b border-slate-800/60 relative scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
