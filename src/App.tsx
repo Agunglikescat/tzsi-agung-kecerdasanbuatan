@@ -10,7 +10,6 @@ import { ReferencesSection } from './components/ReferencesSection';
 import { Footer } from './components/Footer';
 import { SearchModal } from './components/SearchModal';
 import { CosmicParticlesBackground } from './components/CosmicParticlesBackground';
-import { AiChatbot } from './components/AiChatbot';
 import { 
   ArrowUp, 
   Sparkles, 
@@ -146,9 +145,6 @@ export default function App() {
 
       {/* Footer */}
       <Footer onNavigate={scrollToSection} />
-
-      {/* Interactive AI Chatbot powered by Gemini API */}
-      <AiChatbot />
 
       {/* Quick Search Modal */}
       <SearchModal
