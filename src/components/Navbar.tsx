@@ -7,21 +7,18 @@ import {
   HelpCircle, 
   FileText, 
   Menu, 
-  X, 
   Sparkles,
   Search,
   SlidersHorizontal,
-  ChevronRight,
-  Compass
+  FolderOpen
 } from 'lucide-react';
 import { AgungLogo } from './AgungLogo';
 
 interface MenuItem {
   id: string;
   label: string;
-  shortLabel?: string;
+  shortLabel: string;
   icon: React.ComponentType<{ className?: string }>;
-  badge?: string;
   tooltip?: string;
 }
 
@@ -31,7 +28,7 @@ interface NavbarProps {
   slideMode: boolean;
   onToggleSlideMode: () => void;
   onOpenSearch: () => void;
-  onOpenMenuDrawer?: () => void;
+  onOpenMenuDrawer: () => void;
   modularView?: boolean;
   onToggleModularView?: () => void;
 }
@@ -47,7 +44,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   onToggleModularView
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,216 +53,139 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Primary top-right quick navigation
-  const primaryMenuItems: MenuItem[] = [
+  // 7 Bab Materi AI dalam 1 Navbar Tunggal yang Ringkas & Rapi
+  const navItems: MenuItem[] = [
     { id: 'hero', label: 'Judul', shortLabel: 'Judul', icon: BookOpen, tooltip: 'Halaman Utama & Judul' },
-    { id: 'konsep', label: 'Konsep AI', shortLabel: 'Konsep AI', icon: Sparkles, tooltip: 'Konsep Dasar AI & Definisi IBM' },
-    { id: 'ruang-lingkup', label: 'Ruang Lingkup', shortLabel: 'Ruang Lingkup', icon: Layers, tooltip: '7 Cabang Ruang Lingkup AI' },
-    { id: 'sejarah', label: 'Sejarah AI', shortLabel: 'Sejarah AI', icon: History, tooltip: 'Linimasa Sejarah AI 1956-2026' },
-    { id: 'taksonomi', label: 'AI vs ML', shortLabel: 'AI vs ML', icon: GitFork, tooltip: 'Perbandingan AI vs Machine Learning' }
-  ];
-
-  const secondaryNavItems: MenuItem[] = [
-    { id: 'kuis', label: 'Uji Pemahaman', icon: HelpCircle },
-    { id: 'referensi', label: 'Sumber Valid', icon: FileText }
+    { id: 'konsep', label: 'Konsep AI', shortLabel: 'Konsep', icon: Sparkles, tooltip: 'Gambar 1: Konsep Dasar AI & Definisi IBM' },
+    { id: 'ruang-lingkup', label: 'Ruang Lingkup', shortLabel: 'Lingkup', icon: Layers, tooltip: 'Gambar 2: 7 Cabang Ruang Lingkup AI' },
+    { id: 'sejarah', label: 'Sejarah AI', shortLabel: 'Sejarah', icon: History, tooltip: 'Gambar 3: Linimasa Sejarah AI 1956-2026' },
+    { id: 'taksonomi', label: 'AI vs ML', shortLabel: 'AI vs ML', icon: GitFork, tooltip: 'Taksonomi AI vs Machine Learning' },
+    { id: 'kuis', label: 'Kuis AI', shortLabel: 'Kuis', icon: HelpCircle, tooltip: 'Evaluasi Pemahaman 10 Soal' },
+    { id: 'referensi', label: 'Pustaka', shortLabel: 'Pustaka', icon: FileText, tooltip: 'Sumber Literatur & Rujukan Valid' }
   ];
 
   return (
-    <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? 'bg-slate-950/95 backdrop-blur-md shadow-xl shadow-black/40 border-b border-slate-800'
-            : 'bg-slate-950/90 backdrop-blur-sm border-b border-slate-800/60'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 sm:h-20 gap-2">
-            
-            {/* Logo & Brand Left with custom AGUNGPROJECT.ID logo adapted to theme */}
-            <div 
-              onClick={() => onNavigate('hero')}
-              className="flex items-center gap-2.5 cursor-pointer group shrink-0"
-            >
-              <AgungLogo size={40} variant="badge" glow={true} />
-              <div>
-                <span className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-1.5 group-hover:text-cyan-300 transition-colors">
-                  AGUNGPROJECT<span className="text-cyan-400">.ID</span>
-                  <span className="hidden md:inline-block text-[9px] uppercase font-bold px-1.5 py-0.5 rounded bg-blue-500/20 text-cyan-300 border border-blue-400/30">
-                    Edukasi AI
-                  </span>
+    <header
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-slate-950/95 backdrop-blur-md shadow-xl shadow-black/50 border-b border-slate-800'
+          : 'bg-slate-950/90 backdrop-blur-sm border-b border-slate-800/70'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-20 gap-2">
+          
+          {/* Logo & Brand Left */}
+          <div 
+            onClick={() => onNavigate('hero')}
+            className="flex items-center gap-2.5 cursor-pointer group shrink-0"
+          >
+            <AgungLogo size={36} variant="badge" glow={true} />
+            <div>
+              <span className="text-sm sm:text-base font-bold text-white tracking-tight flex items-center gap-1.5 group-hover:text-cyan-300 transition-colors">
+                AGUNGPROJECT<span className="text-cyan-400">.ID</span>
+                <span className="hidden xl:inline-block text-[9px] uppercase font-bold px-1.5 py-0.5 rounded bg-blue-500/20 text-cyan-300 border border-blue-400/30">
+                  Edukasi AI
                 </span>
-                <p className="text-[11px] text-slate-400 hidden xl:block leading-tight">
-                  Konsep • Ruang Lingkup • Sejarah • Taksonomi
-                </p>
-              </div>
+              </span>
             </div>
+          </div>
 
-            {/* ============================================================== */}
-            {/* TOP-RIGHT MENU (Sesuai Permintaan User: untuk judul, gambar 1, 2, 3) */}
-            {/* ============================================================== */}
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              
-              {/* PC Desktop Menu: Dedicated Top-Right Bar for Judul, Gambar 1, 2, 3, AI vs ML */}
-              <nav className="hidden lg:flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-700/80 shadow-inner">
-                {primaryMenuItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = activeSection === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => onNavigate(item.id)}
-                      title={item.tooltip}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all relative ${
-                        isActive
-                          ? 'bg-blue-600 text-white shadow-md shadow-blue-600/40 ring-1 ring-blue-400/50'
-                          : 'text-slate-300 hover:text-white hover:bg-slate-800'
-                      }`}
-                    >
-                      <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-cyan-400'}`} />
-                      <span>{item.label}</span>
-                      {item.badge && (
-                        <span className={`text-[9px] px-1 rounded font-normal ${
-                          isActive ? 'bg-blue-700 text-blue-100' : 'bg-slate-800 text-slate-400'
-                        }`}>
-                          {item.badge}
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
-              </nav>
-
-              {/* Extra Links for Desktop (Kuis & Referensi) */}
-              <div className="hidden xl:flex items-center gap-1 border-l border-slate-800 pl-2">
-                {secondaryNavItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = activeSection === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => onNavigate(item.id)}
-                      className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                        isActive ? 'text-cyan-300 font-semibold' : 'text-slate-400 hover:text-slate-200'
-                      }`}
-                    >
-                      <Icon className="w-3 h-3" />
-                      <span>{item.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Buka Menu & Bab Drawer Button */}
-              {onOpenMenuDrawer && (
+          {/* Desktop Center: Satu-satunya Bilah Bab Materi (Tidak Dobel) */}
+          <nav className="hidden lg:flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-700/80 shadow-inner">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeSection === item.id;
+              return (
                 <button
-                  onClick={onOpenMenuDrawer}
-                  className="px-2 sm:px-2.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs flex items-center gap-1.5 transition-all shadow-sm shadow-blue-900/30 border border-blue-400/40 shrink-0"
-                  title="Buka Daftar Menu & Bab yang bisa dibuka"
+                  key={item.id}
+                  onClick={() => onNavigate(item.id)}
+                  title={item.tooltip}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all relative whitespace-nowrap ${
+                    isActive
+                      ? 'bg-blue-600 text-white shadow-md shadow-blue-600/40 ring-1 ring-blue-400/50'
+                      : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                  }`}
                 >
-                  <Compass className="w-3.5 h-3.5 text-cyan-200 shrink-0" />
-                  <span className="text-[11px] sm:text-xs">Menu Bab</span>
+                  <Icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-cyan-400'}`} />
+                  <span>{item.label}</span>
                 </button>
-              )}
+              );
+            })}
+          </nav>
 
-              {/* Search Button */}
-              <button
-                onClick={onOpenSearch}
-                aria-label="Cari Materi"
-                className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg text-slate-300 bg-slate-900 hover:bg-slate-800 hover:text-white border border-slate-700 transition-colors flex items-center gap-1 text-xs shrink-0"
-                title="Cari materi AI (Tekan /)..."
-              >
-                <Search className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                <span className="hidden sm:inline">Cari</span>
-                <kbd className="hidden sm:inline-block text-[9px] bg-slate-800 text-slate-400 px-1 rounded border border-slate-700">
-                  /
-                </kbd>
-              </button>
+          {/* Right Action Controls */}
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            
+            {/* Tombol Buka 1 Sidebar Tunggal */}
+            <button
+              onClick={onOpenMenuDrawer}
+              className="px-2.5 sm:px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs flex items-center gap-1.5 transition-all shadow-md shadow-blue-900/40 border border-blue-400/40 shrink-0"
+              title="Buka Daftar Menu & Bab"
+            >
+              <FolderOpen className="w-3.5 h-3.5 text-cyan-200 shrink-0" />
+              <span>Daftar Bab</span>
+              <span className="bg-blue-800/90 text-[10px] px-1.5 py-0.5 rounded-full font-bold">
+                7
+              </span>
+            </button>
 
-              {/* Slide Mode Toggle */}
+            {/* Mode Modul / Scroll Toggle (Desktop) */}
+            {onToggleModularView && (
               <button
-                onClick={onToggleSlideMode}
-                className={`flex items-center gap-1 p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg text-xs font-semibold border transition-all shrink-0 ${
-                  slideMode 
-                    ? 'bg-amber-500/20 text-amber-300 border-amber-500/50 shadow-sm shadow-amber-500/20' 
-                    : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white hover:bg-slate-800'
+                onClick={onToggleModularView}
+                className={`hidden md:flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                  modularView 
+                    ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40' 
+                    : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
                 }`}
-                title="Tampilkan replika slide presentasi persis foto"
+                title="Beralih Mode Modul atau Scroll"
               >
-                <SlidersHorizontal className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                <span className="hidden md:inline">
-                  {slideMode ? 'Slide On' : 'Slide'}
-                </span>
+                <SlidersHorizontal className="w-3 h-3 text-cyan-400" />
+                <span>{modularView ? 'Modul' : 'Scroll'}</span>
               </button>
+            )}
 
-              {/* Mobile Hamburger Button */}
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-1.5 sm:p-2 rounded-lg text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:bg-slate-800 transition-colors shrink-0"
-                aria-label="Toggle Menu"
-              >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </button>
+            {/* Slide Mode Toggle */}
+            <button
+              onClick={onToggleSlideMode}
+              className={`flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                slideMode 
+                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/50 shadow-sm shadow-amber-500/20' 
+                  : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white hover:bg-slate-800'
+              }`}
+              title="Tampilkan format slide asli"
+            >
+              <span className="text-amber-400 font-bold">S</span>
+              <span className="hidden sm:inline">
+                {slideMode ? 'Slide On' : 'Slide'}
+              </span>
+            </button>
 
-            </div>
+            {/* Search Button */}
+            <button
+              onClick={onOpenSearch}
+              aria-label="Cari Materi"
+              className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg text-slate-300 bg-slate-900 hover:bg-slate-800 hover:text-white border border-slate-700 transition-colors flex items-center gap-1 text-xs"
+              title="Cari materi AI (Tekan /)..."
+            >
+              <Search className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="hidden sm:inline">Cari</span>
+            </button>
+
+            {/* Mobile Hamburger Button: Juga Membuka 1 Sidebar Tunggal Yang Sama */}
+            <button
+              onClick={onOpenMenuDrawer}
+              className="lg:hidden p-1.5 rounded-lg text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:bg-slate-800 transition-colors"
+              aria-label="Buka Menu Sidebar"
+              title="Buka Menu"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+
           </div>
         </div>
-
-        {/* Mobile Full Navigation Drawer */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden bg-slate-900 border-b border-slate-800 px-4 pt-3 pb-6 space-y-2 shadow-2xl animate-in slide-in-from-top-2 duration-200">
-            <div className="text-xs font-semibold text-cyan-400 px-2 uppercase tracking-wider flex items-center justify-between">
-              <span>Menu Materi Lengkap</span>
-              <span className="text-[10px] text-slate-400 normal-case">PC & Mobile Optimized</span>
-            </div>
-
-            <div className="space-y-1">
-              {[...primaryMenuItems, ...secondaryNavItems].map((item) => {
-                const Icon = item.icon;
-                const isActive = activeSection === item.id;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => {
-                      onNavigate(item.id);
-                      setMobileMenuOpen(false);
-                    }}
-                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
-                      isActive
-                        ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-900/50'
-                        : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <Icon className="w-4 h-4 text-cyan-400" />
-                      <span>{item.label}</span>
-                      {item.badge ? (
-                        <span className="text-[9px] bg-slate-800/80 px-1.5 py-0.5 rounded text-slate-300 border border-slate-700">
-                          {item.badge}
-                        </span>
-                      ) : null}
-                    </div>
-                    <ChevronRight className="w-4 h-4 opacity-50" />
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="pt-2 border-t border-slate-800 flex flex-col gap-2">
-              <button
-                onClick={() => {
-                  onToggleSlideMode();
-                  setMobileMenuOpen(false);
-                }}
-                className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-amber-300 border border-slate-700"
-              >
-                <span>Tampilan: {slideMode ? 'Mode Slide Sederhana' : 'Mode Pembahasan Lengkap'}</span>
-                <SlidersHorizontal className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        )}
-      </header>
-    </>
+      </div>
+    </header>
   );
 };

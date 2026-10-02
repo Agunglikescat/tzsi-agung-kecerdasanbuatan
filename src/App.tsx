@@ -11,16 +11,10 @@ import { Footer } from './components/Footer';
 import { SearchModal } from './components/SearchModal';
 import { CosmicParticlesBackground } from './components/CosmicParticlesBackground';
 import { ModuleMenuDrawer } from './components/ModuleMenuDrawer';
-import { ModuleTabBar } from './components/ModuleTabBar';
 import { ModuleFooterNavigator } from './components/ModuleFooterNavigator';
 import { 
   ArrowUp, 
-  Sparkles, 
-  Layers, 
-  History, 
-  GitFork, 
-  SlidersHorizontal,
-  FolderOpen
+  SlidersHorizontal 
 } from 'lucide-react';
 
 export default function App() {
@@ -114,15 +108,6 @@ export default function App() {
         onToggleSlideMode={() => setSlideMode(!slideMode)}
         onOpenSearch={() => setIsSearchOpen(true)}
         onOpenMenuDrawer={() => setIsDrawerOpen(true)}
-        modularView={modularView}
-        onToggleModularView={() => setModularView(!modularView)}
-      />
-
-      {/* Sticky Module Tab Bar: Menu yang bisa di buka-buka, langsung buka materi tanpa scroll */}
-      <ModuleTabBar
-        activeSection={activeSection}
-        onSelectModule={handleSelectModule}
-        onOpenDrawer={() => setIsDrawerOpen(true)}
         modularView={modularView}
         onToggleModularView={() => setModularView(!modularView)}
       />
@@ -233,90 +218,19 @@ export default function App() {
         onSelectTopic={scrollToSection}
       />
 
-      {/* Floating Action Button: Quick Open Menu & Back to Top */}
-      <div className="fixed bottom-16 md:bottom-6 right-4 sm:right-6 z-40 flex flex-col gap-2">
-        <button
-          onClick={() => setIsDrawerOpen(true)}
-          aria-label="Buka Menu & Bab"
-          className="px-3.5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white shadow-xl shadow-blue-900/50 flex items-center gap-2 transition-all hover:scale-105 border border-blue-400/40 text-xs font-bold"
-          title="Buka Menu & Bab Pembelajaran"
-        >
-          <FolderOpen className="w-4 h-4 text-cyan-200" />
-          <span>Buka Menu</span>
-        </button>
-
-        {showBackToTop && !modularView && (
+      {/* Floating Back to Top Button (Unobtrusive) */}
+      {showBackToTop && !modularView && (
+        <div className="fixed bottom-6 right-6 z-40">
           <button
             onClick={scrollToTop}
             aria-label="Kembali ke atas"
-            className="w-10 h-10 rounded-full bg-slate-800 hover:bg-slate-700 text-white shadow-lg flex items-center justify-center transition-all hover:scale-110 border border-slate-700 ml-auto"
+            className="w-10 h-10 rounded-full bg-slate-800/90 hover:bg-slate-700 text-white shadow-xl flex items-center justify-center transition-all hover:scale-110 border border-slate-700"
             title="Kembali ke atas"
           >
             <ArrowUp className="w-5 h-5" />
           </button>
-        )}
-      </div>
-
-      {/* Mobile Sticky Bottom Module Bar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 px-2 py-1.5 flex items-center justify-around shadow-2xl">
-        <button
-          onClick={() => handleSelectModule('hero')}
-          className={`flex flex-col items-center gap-0.5 text-[9px] ${
-            activeSection === 'hero' ? 'text-cyan-400 font-bold' : 'text-slate-400'
-          }`}
-        >
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>Judul</span>
-        </button>
-
-        <button
-          onClick={() => handleSelectModule('konsep')}
-          className={`flex flex-col items-center gap-0.5 text-[9px] ${
-            activeSection === 'konsep' ? 'text-cyan-400 font-bold' : 'text-slate-400'
-          }`}
-        >
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>Konsep</span>
-        </button>
-
-        <button
-          onClick={() => handleSelectModule('ruang-lingkup')}
-          className={`flex flex-col items-center gap-0.5 text-[9px] ${
-            activeSection === 'ruang-lingkup' ? 'text-cyan-400 font-bold' : 'text-slate-400'
-          }`}
-        >
-          <Layers className="w-3.5 h-3.5" />
-          <span>Ruang Lingkup</span>
-        </button>
-
-        <button
-          onClick={() => handleSelectModule('sejarah')}
-          className={`flex flex-col items-center gap-0.5 text-[9px] ${
-            activeSection === 'sejarah' ? 'text-amber-400 font-bold' : 'text-slate-400'
-          }`}
-        >
-          <History className="w-3.5 h-3.5" />
-          <span>Sejarah</span>
-        </button>
-
-        <button
-          onClick={() => handleSelectModule('taksonomi')}
-          className={`flex flex-col items-center gap-0.5 text-[9px] ${
-            activeSection === 'taksonomi' ? 'text-indigo-400 font-bold' : 'text-slate-400'
-          }`}
-        >
-          <GitFork className="w-3.5 h-3.5" />
-          <span>Taksonomi</span>
-        </button>
-
-        <button
-          onClick={() => setIsDrawerOpen(true)}
-          className="flex flex-col items-center gap-0.5 text-[9px] text-blue-300 font-bold"
-        >
-          <FolderOpen className="w-3.5 h-3.5 text-cyan-300" />
-          <span>Menu Lain</span>
-        </button>
-      </div>
+        </div>
+      )}
     </div>
   );
 }
