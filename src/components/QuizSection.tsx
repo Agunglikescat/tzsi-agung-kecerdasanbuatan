@@ -10,6 +10,7 @@ import {
   BookOpen,
   Sparkles
 } from 'lucide-react';
+import { QuickFactBadge } from './QuickFactModal';
 
 interface QuizSectionProps {
   onNavigateToNext: () => void;
@@ -52,9 +53,12 @@ export const QuizSection: React.FC<QuizSectionProps> = ({ onNavigateToNext }) =>
         
         {/* Header */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-semibold mb-2">
-            <HelpCircle className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Evaluasi & Uji Pemahaman</span>
+          <div className="flex items-center justify-center gap-2 mb-2 flex-wrap">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">
+              <HelpCircle className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Evaluasi & Uji Pemahaman</span>
+            </div>
+            <QuickFactBadge sectionId="kuis" variant="inline" />
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             Kuis Interaktif AI: Uji Pemahaman Anda

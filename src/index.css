@@ -6,6 +6,39 @@
   }
 }
 
+@keyframes chromaticWave {
+  0%, 100% {
+    color: #38bdf8; /* sky cyan */
+    text-shadow: 0 0 16px rgba(56, 189, 248, 0.45);
+  }
+  20% {
+    color: #818cf8; /* indigo */
+    text-shadow: 0 0 16px rgba(129, 140, 248, 0.45);
+  }
+  40% {
+    color: #c084fc; /* purple lavender */
+    text-shadow: 0 0 18px rgba(192, 132, 252, 0.55);
+  }
+  60% {
+    color: #f472b6; /* rose pink */
+    text-shadow: 0 0 18px rgba(244, 114, 182, 0.55);
+  }
+  80% {
+    color: #2dd4bf; /* turquoise */
+    text-shadow: 0 0 16px rgba(45, 212, 191, 0.45);
+  }
+}
+
+.chromatic-letter {
+  display: inline-block;
+  animation: chromaticWave 4.5s ease-in-out infinite;
+  transition: transform 0.2s ease;
+}
+
+.chromatic-letter:hover {
+  transform: translateY(-2px) scale(1.1);
+}
+
 .bg-slate-850 {
   background-color: #162032;
 }

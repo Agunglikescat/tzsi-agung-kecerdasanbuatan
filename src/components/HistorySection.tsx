@@ -22,6 +22,8 @@ import {
   SlidersHorizontal,
   BookmarkCheck
 } from 'lucide-react';
+import { QuickFactBadge } from './QuickFactModal';
+import { AnimatedLetterText } from './AnimatedLetterText';
 
 interface HistorySectionProps {
   onNavigateToNext: () => void;
@@ -75,12 +77,18 @@ export const HistorySection: React.FC<HistorySectionProps> = ({ onNavigateToNext
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold mb-2">
-              <History className="w-3.5 h-3.5 text-amber-400" />
-              <span>Gambar 3 (Slide Presentasi 3)</span>
+            <div className="flex items-center gap-3 flex-wrap mb-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold">
+                <History className="w-3.5 h-3.5 text-amber-400" />
+                <span>Gambar 3 (Slide Presentasi 3)</span>
+              </div>
+              <QuickFactBadge sectionId="sejarah" variant="inline" />
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-              Sejarah Perkembangan AI (Visualisasi Garis Waktu)
+              <AnimatedLetterText text="Sejarah Perkembangan AI" />
+              <span className="text-slate-300 font-semibold text-xl sm:text-2xl ml-2 block sm:inline">
+                (Visualisasi Garis Waktu)
+              </span>
             </h2>
             <p className="text-slate-400 text-xs sm:text-sm mt-1 max-w-2xl">
               Visualisasi interaktif tonggak-tonggak penting, inovasi revolusioner, dan titik balik peradaban AI sejak 1956 hingga era Hadiah Nobel & AI Agents masa kini.

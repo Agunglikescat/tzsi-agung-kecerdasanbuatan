@@ -10,6 +10,7 @@ import {
   Search,
   Filter
 } from 'lucide-react';
+import { QuickFactBadge } from './QuickFactModal';
 
 export const ReferencesSection: React.FC = () => {
   const [selectedType, setSelectedType] = useState<string>('all');
@@ -31,9 +32,12 @@ export const ReferencesSection: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-300 text-xs font-semibold mb-2">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
-              <span>Daftar Pustaka & Verifikasi Akademik</span>
+            <div className="flex items-center gap-3 flex-wrap mb-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-300 text-xs font-semibold">
+                <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+                <span>Daftar Pustaka & Verifikasi Akademik</span>
+              </div>
+              <QuickFactBadge sectionId="referensi" variant="inline" />
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
               Sumber Rujukan Valid & Otoritatif

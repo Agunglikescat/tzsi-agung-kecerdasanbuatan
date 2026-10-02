@@ -31,6 +31,9 @@ interface NavbarProps {
   slideMode: boolean;
   onToggleSlideMode: () => void;
   onOpenSearch: () => void;
+  onOpenMenuDrawer?: () => void;
+  modularView?: boolean;
+  onToggleModularView?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -38,7 +41,10 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigate,
   slideMode,
   onToggleSlideMode,
-  onOpenSearch
+  onOpenSearch,
+  onOpenMenuDrawer,
+  modularView = true,
+  onToggleModularView
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -150,6 +156,18 @@ export const Navbar: React.FC<NavbarProps> = ({
                   );
                 })}
               </div>
+
+              {/* Buka Menu & Bab Drawer Button */}
+              {onOpenMenuDrawer && (
+                <button
+                  onClick={onOpenMenuDrawer}
+                  className="px-2.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs flex items-center gap-1.5 transition-all shadow-sm shadow-blue-900/30 border border-blue-400/40"
+                  title="Buka Daftar Menu & Bab yang bisa dibuka"
+                >
+                  <Compass className="w-3.5 h-3.5 text-cyan-200" />
+                  <span className="hidden sm:inline">Menu Bab</span>
+                </button>
+              )}
 
               {/* Search Button */}
               <button

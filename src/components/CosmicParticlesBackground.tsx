@@ -9,20 +9,26 @@ interface Particle {
   vy: number;
   alpha: number;
   baseAlpha: number;
+  pulsePhase: number;
   pulseSpeed: number;
-  glow: boolean;
+  hasRing: boolean;
+  ringRadius: number;
+  ringColor: string;
+  ringDashOffset: number;
 }
 
-interface LargeOrb {
+interface BokehOrb {
   x: number;
   y: number;
   radius: number;
   innerRadius: number;
   color: string;
   innerColor: string;
+  strokeColor?: string;
   vx: number;
   vy: number;
   alpha: number;
+  baseAlpha: number;
   pulsePhase: number;
   pulseSpeed: number;
 }
@@ -37,86 +43,127 @@ export const CosmicParticlesBackground: React.FC = () => {
     if (!ctx) return;
 
     let animationFrameId: number;
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    // Color palettes directly matching the uploaded screenshot:
-    // Soft pastel pink/magenta, cyan/sky, lavender/violet, and crisp white
-    const starColors = [
-      '#f472b6', // pink
-      '#fb7185', // rose
-      '#fda4af', // light pink
+    let displayWidth = window.innerWidth;
+    let displayHeight = window.innerHeight;
+
+    const setupDimensions = () => {
+      displayWidth = window.innerWidth;
+      displayHeight = window.innerHeight;
+      canvas.width = Math.floor(displayWidth * dpr);
+      canvas.height = Math.floor(displayHeight * dpr);
+      canvas.style.width = `${displayWidth}px`;
+      canvas.style.height = `${displayHeight}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    setupDimensions();
+
+    // Exact color palette sampled from user's uploaded SVG image:
+    // "use-svg-as-background-image-particle-strokes.svg"
+    const dotColors = [
+      '#f472b6', // soft coral pink
+      '#fb7185', // rose pink
+      '#fda4af', // delicate peach pink
+      '#e879f9', // vibrant orchid pink
+      '#c084fc', // lavender violet
+      '#a855f7', // purple
       '#38bdf8', // sky cyan
       '#22d3ee', // bright cyan
-      '#67e8f9', // light cyan
-      '#c084fc', // purple/lavender
-      '#a855f7', // violet
-      '#e0e7ff', // soft white-blue
-      '#ffffff'  // white sparkle
+      '#2dd4bf', // teal/turquoise
+      '#e0e7ff', // soft bluish white
+      '#ffffff'  // pure white star
     ];
 
-    // Large glowing bokeh orbs colors matching the dark purple/indigo/navy discs in the image
-    const orbColorPairs = [
-      { outer: 'rgba(32, 22, 58, 0.55)', inner: 'rgba(48, 30, 88, 0.7)' },
-      { outer: 'rgba(18, 32, 58, 0.55)', inner: 'rgba(28, 48, 88, 0.7)' },
-      { outer: 'rgba(40, 18, 52, 0.5)', inner: 'rgba(65, 26, 85, 0.65)' },
-      { outer: 'rgba(20, 36, 62, 0.5)', inner: 'rgba(30, 55, 95, 0.65)' },
-      { outer: 'rgba(35, 25, 60, 0.45)', inner: 'rgba(50, 35, 90, 0.6)' }
+    // Large glowing bokeh orbs and concentric discs matching screenshot
+    const bokehColorPresets = [
+      {
+        outer: 'rgba(58, 24, 76, 0.42)',  // plum violet
+        inner: 'rgba(84, 32, 112, 0.55)',
+        stroke: 'rgba(168, 85, 247, 0.22)'
+      },
+      {
+        outer: 'rgba(20, 36, 68, 0.45)',  // deep space navy
+        inner: 'rgba(28, 54, 98, 0.60)',
+        stroke: 'rgba(56, 189, 248, 0.20)'
+      },
+      {
+        outer: 'rgba(22, 60, 78, 0.42)',  // deep cyan/teal
+        inner: 'rgba(32, 88, 110, 0.55)',
+        stroke: 'rgba(45, 212, 191, 0.22)'
+      },
+      {
+        outer: 'rgba(74, 22, 62, 0.38)',  // dark magenta
+        inner: 'rgba(110, 32, 88, 0.50)',
+        stroke: 'rgba(244, 114, 182, 0.22)'
+      },
+      {
+        outer: 'rgba(26, 28, 64, 0.40)',  // midnight indigo
+        inner: 'rgba(38, 44, 96, 0.55)',
+        stroke: 'rgba(129, 140, 248, 0.20)'
+      }
     ];
 
-    // Generate Small & Medium Stars
-    const particleCount = Math.min(Math.floor((width * height) / 9000), 120);
+    // 1. Generate Small & Medium Sparkle Particles
+    const particleDensity = Math.min(Math.floor((displayWidth * displayHeight) / 7500), 140);
     const particles: Particle[] = [];
 
-    for (let i = 0; i < particleCount; i++) {
-      const isGlowStar = Math.random() > 0.7;
-      const baseAlpha = Math.random() * 0.6 + 0.4;
+    for (let i = 0; i < particleDensity; i++) {
+      const isMedium = Math.random() > 0.65;
+      const isSmall = !isMedium;
+      const radius = isSmall ? Math.random() * 1.2 + 0.6 : Math.random() * 2.5 + 1.6;
+      const hasRing = Math.random() > 0.82; // Some particles have stroke orbital rings
+      const color = dotColors[Math.floor(Math.random() * dotColors.length)];
+      const baseAlpha = Math.random() * 0.5 + 0.4;
+
       particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        radius: isGlowStar ? Math.random() * 2.2 + 1.8 : Math.random() * 1.5 + 0.8,
-        color: starColors[Math.floor(Math.random() * starColors.length)],
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.25 - 0.05, // gentle upward drift
+        x: Math.random() * displayWidth,
+        y: Math.random() * displayHeight,
+        radius,
+        color,
+        vx: (Math.random() - 0.5) * 0.28,
+        vy: (Math.random() - 0.5) * 0.28 - 0.06, // subtle upward cosmic drift
         alpha: baseAlpha,
-        baseAlpha: baseAlpha,
+        baseAlpha,
+        pulsePhase: Math.random() * Math.PI * 2,
         pulseSpeed: Math.random() * 0.02 + 0.008,
-        glow: isGlowStar
+        hasRing,
+        ringRadius: radius * (Math.random() * 2.5 + 2.8),
+        ringColor: color,
+        ringDashOffset: Math.random() * 20
       });
     }
 
-    // Generate Large Glowing Bokeh Orbs (exactly as in the screenshot)
-    const orbCount = Math.min(Math.max(Math.floor(width / 130), 8), 16);
-    const largeOrbs: LargeOrb[] = [];
+    // 2. Generate Large Bokeh Orbs & Concentric Discs
+    const orbCount = Math.min(Math.max(Math.floor(displayWidth / 120), 10), 18);
+    const bokehOrbs: BokehOrb[] = [];
 
     for (let i = 0; i < orbCount; i++) {
-      const radius = Math.random() * 40 + 28; // 28px - 68px
-      const pair = orbColorPairs[Math.floor(Math.random() * orbColorPairs.length)];
-      largeOrbs.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
+      const preset = bokehColorPresets[Math.floor(Math.random() * bokehColorPresets.length)];
+      const radius = Math.random() * 45 + 30; // 30px to 75px
+      const baseAlpha = Math.random() * 0.35 + 0.45;
+
+      bokehOrbs.push({
+        x: Math.random() * displayWidth,
+        y: Math.random() * displayHeight,
         radius,
-        innerRadius: radius * (Math.random() * 0.35 + 0.35),
-        color: pair.outer,
-        innerColor: pair.inner,
-        vx: (Math.random() - 0.5) * 0.15,
-        vy: (Math.random() - 0.5) * 0.15,
-        alpha: Math.random() * 0.3 + 0.5,
+        innerRadius: radius * (Math.random() * 0.4 + 0.35),
+        color: preset.outer,
+        innerColor: preset.inner,
+        strokeColor: preset.stroke,
+        vx: (Math.random() - 0.5) * 0.16,
+        vy: (Math.random() - 0.5) * 0.16,
+        alpha: baseAlpha,
+        baseAlpha,
         pulsePhase: Math.random() * Math.PI * 2,
-        pulseSpeed: Math.random() * 0.01 + 0.005
+        pulseSpeed: Math.random() * 0.012 + 0.006
       });
     }
 
-    // Resize Handler
-    const handleResize = () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    };
-    window.addEventListener('resize', handleResize);
-
-    // Mouse Parallax Interaction (gentle, non-intrusive)
-    let mouseX = width / 2;
-    let mouseY = height / 2;
+    // Interactive mouse parallax
+    let mouseX = displayWidth / 2;
+    let mouseY = displayHeight / 2;
     let targetMouseX = mouseX;
     let targetMouseY = mouseY;
 
@@ -124,9 +171,15 @@ export const CosmicParticlesBackground: React.FC = () => {
       targetMouseX = e.clientX;
       targetMouseY = e.clientY;
     };
+
     window.addEventListener('mousemove', handleMouseMove);
 
-    // Animation Loop
+    const handleResize = () => {
+      setupDimensions();
+    };
+    window.addEventListener('resize', handleResize);
+
+    // Animation Render Loop
     let lastTime = performance.now();
 
     const render = (time: number) => {
@@ -134,84 +187,171 @@ export const CosmicParticlesBackground: React.FC = () => {
       lastTime = time;
 
       // Smooth mouse interpolation
-      mouseX += (targetMouseX - mouseX) * 0.03;
-      mouseY += (targetMouseY - mouseY) * 0.03;
-      const offsetX = (mouseX - width / 2) * 0.015;
-      const offsetY = (mouseY - height / 2) * 0.015;
+      mouseX += (targetMouseX - mouseX) * 0.035;
+      mouseY += (targetMouseY - mouseY) * 0.035;
+      const parallaxX = (mouseX - displayWidth / 2) * 0.02;
+      const parallaxY = (mouseY - displayHeight / 2) * 0.02;
 
-      ctx.clearRect(0, 0, width, height);
+      ctx.clearRect(0, 0, displayWidth, displayHeight);
 
-      // 1. Deep Midnight Space Gradient Background matching screenshot
-      const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
-      bgGrad.addColorStop(0, '#060814');
-      bgGrad.addColorStop(0.5, '#080a1c');
-      bgGrad.addColorStop(1, '#050711');
-      ctx.fillStyle = bgGrad;
-      ctx.fillRect(0, 0, width, height);
+      // 1. Deep Midnight Cosmic Space Gradient (matching user image's background)
+      const bgGradient = ctx.createLinearGradient(0, 0, displayWidth * 0.8, displayHeight);
+      bgGradient.addColorStop(0, '#060714');
+      bgGradient.addColorStop(0.35, '#080a1c');
+      bgGradient.addColorStop(0.7, '#0b0920');
+      bgGradient.addColorStop(1, '#050711');
+      ctx.fillStyle = bgGradient;
+      ctx.fillRect(0, 0, displayWidth, displayHeight);
 
-      // 2. Draw Large Glowing Orbs / Bokeh Discs (Background Layer)
-      largeOrbs.forEach((orb) => {
+      // Subtle ambient nebula glow spots
+      const radialGlow1 = ctx.createRadialGradient(
+        displayWidth * 0.25 - parallaxX * 0.5,
+        displayHeight * 0.3 - parallaxY * 0.5,
+        10,
+        displayWidth * 0.25,
+        displayHeight * 0.3,
+        displayWidth * 0.45
+      );
+      radialGlow1.addColorStop(0, 'rgba(88, 28, 135, 0.12)');
+      radialGlow1.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = radialGlow1;
+      ctx.fillRect(0, 0, displayWidth, displayHeight);
+
+      const radialGlow2 = ctx.createRadialGradient(
+        displayWidth * 0.8 - parallaxX * 0.5,
+        displayHeight * 0.7 - parallaxY * 0.5,
+        10,
+        displayWidth * 0.8,
+        displayHeight * 0.7,
+        displayWidth * 0.5
+      );
+      radialGlow2.addColorStop(0, 'rgba(14, 116, 144, 0.10)');
+      radialGlow2.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = radialGlow2;
+      ctx.fillRect(0, 0, displayWidth, displayHeight);
+
+      // 2. Render Bokeh Orbs & Concentric Soft Discs (Layer 1 - Background)
+      bokehOrbs.forEach((orb) => {
         orb.x += orb.vx * delta;
         orb.y += orb.vy * delta;
         orb.pulsePhase += orb.pulseSpeed * delta;
 
-        // Wrap around screen boundaries with margin
         const margin = orb.radius * 2;
-        if (orb.x < -margin) orb.x = width + margin;
-        if (orb.x > width + margin) orb.x = -margin;
-        if (orb.y < -margin) orb.y = height + margin;
-        if (orb.y > height + margin) orb.y = -margin;
+        if (orb.x < -margin) orb.x = displayWidth + margin;
+        if (orb.x > displayWidth + margin) orb.x = -margin;
+        if (orb.y < -margin) orb.y = displayHeight + margin;
+        if (orb.y > displayHeight + margin) orb.y = -margin;
 
-        const currentScale = 1 + Math.sin(orb.pulsePhase) * 0.08;
+        const currentScale = 1 + Math.sin(orb.pulsePhase) * 0.09;
         const currentRadius = orb.radius * currentScale;
+        const currentAlpha = orb.baseAlpha * (0.85 + Math.sin(orb.pulsePhase) * 0.15);
 
-        // Outer soft glow disc
         ctx.save();
-        ctx.globalAlpha = orb.alpha * (0.85 + Math.sin(orb.pulsePhase) * 0.15);
+        ctx.globalAlpha = Math.max(0.1, Math.min(0.9, currentAlpha));
+
+        // Outer soft bokeh disc
         ctx.fillStyle = orb.color;
         ctx.beginPath();
-        ctx.arc(orb.x - offsetX * 0.5, orb.y - offsetY * 0.5, currentRadius, 0, Math.PI * 2);
+        ctx.arc(
+          orb.x - parallaxX * 0.4,
+          orb.y - parallaxY * 0.4,
+          currentRadius,
+          0,
+          Math.PI * 2
+        );
         ctx.fill();
 
-        // Inner nested core disc (seen in screenshot's concentric orbs)
+        // Inner nested core disc (characteristic of the user's uploaded image)
         ctx.fillStyle = orb.innerColor;
         ctx.beginPath();
         ctx.arc(
-          orb.x - offsetX * 0.5,
-          orb.y - offsetY * 0.5,
+          orb.x - parallaxX * 0.4,
+          orb.y - parallaxY * 0.4,
           orb.innerRadius * currentScale,
           0,
           Math.PI * 2
         );
         ctx.fill();
+
+        // Translucent stroke outline on select orbs
+        if (orb.strokeColor) {
+          ctx.strokeStyle = orb.strokeColor;
+          ctx.lineWidth = 1.2;
+          ctx.stroke();
+        }
+
         ctx.restore();
       });
 
-      // 3. Draw Sparkling Dots & Stars (Foreground Layer)
+      // 3. Render Subtle Constellation Connecting Strokes between nearby particles
+      ctx.save();
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          // Connect if particles are very close (< 70px)
+          if (dist < 70) {
+            const strokeAlpha = (1 - dist / 70) * 0.18;
+            ctx.strokeStyle = `rgba(168, 85, 247, ${strokeAlpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x - parallaxX, particles[i].y - parallaxY);
+            ctx.lineTo(particles[j].x - parallaxX, particles[j].y - parallaxY);
+            ctx.stroke();
+          }
+        }
+      }
+      ctx.restore();
+
+      // 4. Render Sparkling Particles & Orbital Particle Strokes (Layer 2 - Foreground)
       particles.forEach((p) => {
         p.x += p.vx * delta;
         p.y += p.vy * delta;
-        p.alpha = p.baseAlpha + Math.sin(time * p.pulseSpeed) * 0.25;
+        p.pulsePhase += p.pulseSpeed * delta;
+        p.ringDashOffset += 0.3 * delta;
 
         // Wrap around boundaries
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-        if (p.y < 0) p.y = height;
-        if (p.y > height) p.y = 0;
+        if (p.x < 0) p.x = displayWidth;
+        if (p.x > displayWidth) p.x = 0;
+        if (p.y < 0) p.y = displayHeight;
+        if (p.y > displayHeight) p.y = 0;
+
+        const currentAlpha = p.baseAlpha + Math.sin(p.pulsePhase) * 0.28;
+        const finalAlpha = Math.max(0.12, Math.min(1.0, currentAlpha));
 
         ctx.save();
-        ctx.globalAlpha = Math.max(0.15, Math.min(1, p.alpha));
+        ctx.globalAlpha = finalAlpha;
 
-        // Soft glow for special stars
-        if (p.glow) {
-          ctx.shadowBlur = 8;
-          ctx.shadowColor = p.color;
+        // Particle Core
+        ctx.fillStyle = p.color;
+        ctx.shadowBlur = p.radius > 2.0 ? 10 : 4;
+        ctx.shadowColor = p.color;
+
+        ctx.beginPath();
+        ctx.arc(p.x - parallaxX, p.y - parallaxY, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Particle Stroke Ring (Orbital stroke halo from "particle-strokes.svg")
+        if (p.hasRing) {
+          ctx.shadowBlur = 0;
+          ctx.strokeStyle = p.ringColor;
+          ctx.lineWidth = 1;
+          ctx.setLineDash([3, 4]);
+          ctx.lineDashOffset = p.ringDashOffset;
+
+          ctx.beginPath();
+          ctx.arc(
+            p.x - parallaxX,
+            p.y - parallaxY,
+            p.ringRadius * (1 + Math.sin(p.pulsePhase) * 0.1),
+            0,
+            Math.PI * 2
+          );
+          ctx.stroke();
         }
 
-        ctx.fillStyle = p.color;
-        ctx.beginPath();
-        ctx.arc(p.x - offsetX, p.y - offsetY, p.radius, 0, Math.PI * 2);
-        ctx.fill();
         ctx.restore();
       });
 
@@ -230,7 +370,7 @@ export const CosmicParticlesBackground: React.FC = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none -z-10 w-full h-full"
+      className="fixed inset-0 pointer-events-none z-0 w-full h-full"
       style={{ display: 'block' }}
     />
   );

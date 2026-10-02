@@ -10,6 +10,8 @@ import {
   BookOpen
 } from 'lucide-react';
 import { AgungLogo } from './AgungLogo';
+import { QuickFactBadge } from './QuickFactModal';
+import { AnimatedLetterText } from './AnimatedLetterText';
 
 interface HeroProps {
   onNavigate: (sectionId: string) => void;
@@ -35,15 +37,22 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>Berdasarkan Sumber Valid & Nobel 2024</span>
           </div>
+          <QuickFactBadge sectionId="hero" variant="inline" />
         </div>
 
         {/* Main Title according to user prompt */}
         <div className="text-center max-w-4xl mx-auto">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
-            Ruang Lingkup, Konsep AI, <br />
-            <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-300 bg-clip-text text-transparent">
-              Sejarah Perkembangan AI
-            </span>
+            <AnimatedLetterText 
+              text="Ruang Lingkup, Konsep AI," 
+              className="text-white drop-shadow-md"
+            />
+            <br />
+            <AnimatedLetterText 
+              text="Sejarah Perkembangan AI"
+              delayOffset={24}
+              className="drop-shadow-lg"
+            />
             <br />
             <span className="text-2xl sm:text-3xl md:text-4xl text-slate-200 font-semibold mt-2 block">
               & AI vs Machine Learning (Taksonomi AI)

@@ -20,6 +20,8 @@ import {
   Code2,
   Workflow
 } from 'lucide-react';
+import { QuickFactBadge } from './QuickFactModal';
+import { AnimatedLetterText } from './AnimatedLetterText';
 
 interface TaxonomySectionProps {
   onNavigateToNext: () => void;
@@ -109,12 +111,18 @@ export const TaxonomySection: React.FC<TaxonomySectionProps> = ({ onNavigateToNe
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-semibold mb-2">
-              <GitFork className="w-3.5 h-3.5 text-indigo-400" />
-              <span>Taksonomi & Relasi Hubungan</span>
+            <div className="flex items-center gap-3 flex-wrap mb-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-semibold">
+                <GitFork className="w-3.5 h-3.5 text-indigo-400" />
+                <span>Taksonomi & Relasi Hubungan</span>
+              </div>
+              <QuickFactBadge sectionId="taksonomi" variant="inline" />
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-              AI vs Machine Learning (Taksonomi AI)
+              <AnimatedLetterText text="AI vs Machine Learning" />
+              <span className="text-slate-300 font-semibold text-xl sm:text-2xl ml-2 block sm:inline">
+                (Taksonomi AI)
+              </span>
             </h2>
             <p className="text-slate-400 text-xs sm:text-sm mt-1 max-w-2xl">
               Perbandingan mendalam, visualisasi diagram hierarki dan alur kerja (workflow), tabel komparasi parameter teknis, serta penjelasan bersumber dari literatur valid (Arthur Samuel, Tom Mitchell, Russell & Norvig, Nature).

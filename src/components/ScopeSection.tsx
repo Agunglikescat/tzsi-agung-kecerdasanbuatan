@@ -19,6 +19,8 @@ import {
   Sparkles,
   Info
 } from 'lucide-react';
+import { QuickFactBadge } from './QuickFactModal';
+import { AnimatedLetterText } from './AnimatedLetterText';
 
 interface ScopeSectionProps {
   onNavigateToNext: () => void;
@@ -55,12 +57,15 @@ export const ScopeSection: React.FC<ScopeSectionProps> = ({ onNavigateToNext }) 
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold mb-2">
-              <Layers className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Gambar 2 (Slide Presentasi 2)</span>
+            <div className="flex items-center gap-3 flex-wrap mb-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold">
+                <Layers className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Gambar 2 (Slide Presentasi 2)</span>
+              </div>
+              <QuickFactBadge sectionId="ruang-lingkup" variant="inline" />
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-              Ruang Lingkup AI & Cabang Utama
+              <AnimatedLetterText text="Ruang Lingkup AI & Cabang Utama" />
             </h2>
             <p className="text-slate-400 text-sm mt-1 max-w-2xl">
               Dilengkapi penjelasan mendalam bersumber dari literatur ilmiah valid (IEEE, Nature, Stanford University, MIT Press, & UNESCO).
