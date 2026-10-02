@@ -13,13 +13,11 @@ import { CosmicParticlesBackground } from './components/CosmicParticlesBackgroun
 import { ModuleMenuDrawer } from './components/ModuleMenuDrawer';
 import { ModuleFooterNavigator } from './components/ModuleFooterNavigator';
 import { 
-  ArrowUp, 
-  SlidersHorizontal 
+  ArrowUp 
 } from 'lucide-react';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<string>('hero');
-  const [slideMode, setSlideMode] = useState<boolean>(false);
   const [modularView, setModularView] = useState<boolean>(true); // Default true: Buka per menu tanpa scroll panjang
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
@@ -104,23 +102,11 @@ export default function App() {
       <Navbar
         activeSection={activeSection}
         onNavigate={scrollToSection}
-        slideMode={slideMode}
-        onToggleSlideMode={() => setSlideMode(!slideMode)}
         onOpenSearch={() => setIsSearchOpen(true)}
-        onOpenMenuDrawer={() => setIsDrawerOpen(true)}
+        onOpenSidebar={() => setIsDrawerOpen(true)}
         modularView={modularView}
         onToggleModularView={() => setModularView(!modularView)}
       />
-
-      {/* Global Slide Mode Notice Banner if activated */}
-      {slideMode && (
-        <div className="bg-amber-500/90 text-slate-950 text-xs py-2 px-4 text-center font-bold shadow-md flex items-center justify-center gap-2">
-          <SlidersHorizontal className="w-4 h-4" />
-          <span>
-            Mode Slide Aktif: Menampilkan replika tata letak asli Gambar 1, 2, dan 3 dengan format presentasi. Klik tombol 'Slide' di navbar untuk kembali.
-          </span>
-        </div>
-      )}
 
       {/* Main Content Sections: Modular Mode (Buka per menu tanpa scroll panjang) or Scroll All */}
       <main className="flex-1 pb-16 md:pb-8 relative z-10">
@@ -133,7 +119,6 @@ export default function App() {
 
             {activeSection === 'konsep' && (
               <ConceptSection
-                slideMode={slideMode}
                 onNavigateToNext={() => handleSelectModule('ruang-lingkup')}
               />
             )}
@@ -178,7 +163,6 @@ export default function App() {
           <>
             <Hero onNavigate={scrollToSection} />
             <ConceptSection
-              slideMode={slideMode}
               onNavigateToNext={() => scrollToSection('ruang-lingkup')}
             />
             <ScopeSection

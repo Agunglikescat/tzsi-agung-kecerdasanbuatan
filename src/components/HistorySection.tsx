@@ -80,7 +80,7 @@ export const HistorySection: React.FC<HistorySectionProps> = ({ onNavigateToNext
             <div className="flex items-center gap-3 flex-wrap mb-2">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold">
                 <History className="w-3.5 h-3.5 text-amber-400" />
-                <span>Gambar 3 (Slide Presentasi 3)</span>
+                <span>Materi Pokok Gambar 3</span>
               </div>
               <QuickFactBadge sectionId="sejarah" variant="inline" />
             </div>
@@ -117,7 +117,7 @@ export const HistorySection: React.FC<HistorySectionProps> = ({ onNavigateToNext
               }`}
             >
               <SlidersHorizontal className="w-3.5 h-3.5" />
-              <span>Slide Asli (2 Kolom)</span>
+              <span>Ringkasan (2 Kolom)</span>
             </button>
           </div>
         </div>
@@ -284,7 +284,7 @@ export const HistorySection: React.FC<HistorySectionProps> = ({ onNavigateToNext
                   <div className="bg-slate-900 p-5 rounded-xl border border-slate-700/80 space-y-3">
                     <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
                       <BookmarkCheck className="w-4 h-4" />
-                      Poin Inti Slide (Gambar 3):
+                      Poin Inti Materi Gambar 3:
                     </span>
                     <ul className="space-y-2.5">
                       {selectedMilestone.bulletPoints.map((bp, i) => (
@@ -398,7 +398,7 @@ export const HistorySection: React.FC<HistorySectionProps> = ({ onNavigateToNext
             {/* Header Banner - Exact replica of user's dark navy header */}
             <div className="bg-[#0b162c] text-white py-6 px-6 text-center relative border-b-2 border-amber-500/40">
               <div className="absolute top-2 left-4 text-[10px] text-amber-300/80 font-mono tracking-wider uppercase">
-                Slide 3 • Gambar 3
+                Materi Pokok • Gambar 3
               </div>
               <h3 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow-sm font-sans">
                 Sejarah Perkembangan AI
@@ -496,7 +496,7 @@ export const HistorySection: React.FC<HistorySectionProps> = ({ onNavigateToNext
             {/* Footer inside replica */}
             <div className="bg-slate-100 px-6 py-3 border-t border-slate-200 text-xs text-slate-500 flex flex-wrap items-center justify-between gap-2">
               <span>Disertai penjelasan valid dari Arsip Dartmouth, Lighthill Report, IBM Research, NeurIPS, & Yayasan Nobel</span>
-              <span className="font-semibold text-amber-700">Slide 3 dari 3 Seri Modul AI</span>
+              <span className="font-semibold text-amber-700">Materi Pokok 3 dari 7 Bab AI</span>
             </div>
           </div>
         )}

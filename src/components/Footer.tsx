@@ -1,6 +1,5 @@
 import React from 'react';
-import { ShieldCheck, Heart, ArrowUp } from 'lucide-react';
-import { AgungLogo } from './AgungLogo';
+import { ShieldCheck, ArrowUp } from 'lucide-react';
 
 interface FooterProps {
   onNavigate: (sectionId: string) => void;
@@ -18,16 +17,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           
           {/* Col 1: Brand & Overview */}
           <div className="md:col-span-2 space-y-3">
-            <div className="flex items-center gap-3 text-white font-bold text-base">
-              <AgungLogo size={36} variant="badge" glow={false} />
-              <div>
-                <span className="text-white font-extrabold text-base tracking-tight">
-                  AGUNGPROJECT<span className="text-cyan-400">.ID</span>
-                </span>
-                <span className="text-[10px] text-slate-400 font-mono block">
-                  Pusat Edukasi & Ensiklopedia Kecerdasan Buatan
-                </span>
-              </div>
+            <div className="text-white font-bold text-base">
+              <span className="text-white font-extrabold text-base tracking-tight">
+                AGUNGPROJECT<span className="text-cyan-400">.ID</span>
+              </span>
+              <span className="text-[10px] text-slate-400 font-mono block mt-0.5">
+                Pusat Edukasi & Ensiklopedia Kecerdasan Buatan
+              </span>
             </div>
             <p className="text-slate-400 text-xs leading-relaxed max-w-md">
               Platform edukasi interaktif berbasis web untuk mempelajari Konsep AI (Gambar 1), Ruang Lingkup dan 7 Cabang Utama (Gambar 2), Sejarah Perkembangan AI dari 1956 hingga Era Nobel & AI Agents (Gambar 3), serta Taksonomi AI vs Machine Learning dengan rujukan ilmiah terverifikasi.

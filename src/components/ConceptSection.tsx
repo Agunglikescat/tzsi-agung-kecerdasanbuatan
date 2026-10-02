@@ -17,12 +17,10 @@ import { QuickFactBadge } from './QuickFactModal';
 import { AnimatedLetterText } from './AnimatedLetterText';
 
 interface ConceptSectionProps {
-  slideMode: boolean;
   onNavigateToNext: () => void;
 }
 
 export const ConceptSection: React.FC<ConceptSectionProps> = ({ 
-  slideMode,
   onNavigateToNext 
 }) => {
   const [copiedQuote, setCopiedQuote] = useState<string | null>(null);
@@ -44,7 +42,7 @@ export const ConceptSection: React.FC<ConceptSectionProps> = ({
             <div className="flex items-center gap-3 flex-wrap mb-2">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-300 text-xs font-semibold">
                 <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-                <span>Gambar 1 (Slide Presentasi 1)</span>
+                <span>Materi Pokok Gambar 1</span>
               </div>
               <QuickFactBadge sectionId="konsep" variant="inline" />
             </div>
@@ -66,7 +64,7 @@ export const ConceptSection: React.FC<ConceptSectionProps> = ({
                   : 'text-slate-300 hover:text-white'
               }`}
             >
-              Tampilan Slide Asli
+              Inti Konsep AI
             </button>
             <button
               onClick={() => setActiveTab('quadrants')}
@@ -92,14 +90,14 @@ export const ConceptSection: React.FC<ConceptSectionProps> = ({
         </div>
 
         {/* ============================================================== */}
-        {/* REPLICA OF USER'S SLIDE 1 (Konsep AI) */}
+        {/* REPLICA OF USER'S GAMBAR 1 (Konsep AI) */}
         {/* ============================================================== */}
         <div className="rounded-2xl overflow-hidden shadow-2xl border border-slate-700 bg-white text-slate-800 transition-all">
           
           {/* Header Banner - Exact replica of user's dark navy header */}
           <div className="bg-[#0b162c] text-white py-6 px-6 text-center relative border-b-2 border-cyan-500/40">
             <div className="absolute top-2 left-4 text-[10px] text-cyan-300/80 font-mono tracking-wider uppercase">
-              Slide 1 • Gambar 1
+              Materi Pokok • Gambar 1
             </div>
             <h3 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow-sm font-sans">
               Konsep AI
@@ -290,7 +288,7 @@ export const ConceptSection: React.FC<ConceptSectionProps> = ({
           {/* Footer note inside slide */}
           <div className="bg-slate-100 px-6 py-3 border-t border-slate-200 text-xs text-slate-500 flex flex-wrap items-center justify-between gap-2">
             <span>Rujukan: IBM Technology Whitepaper & Stanford Computer Science Archives (John McCarthy)</span>
-            <span className="font-semibold text-blue-700">Slide 1 dari 3 Seri Modul AI</span>
+            <span className="font-semibold text-blue-700">Materi Pokok 1 dari 7 Bab AI</span>
           </div>
         </div>
 

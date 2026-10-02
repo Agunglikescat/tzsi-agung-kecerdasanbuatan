@@ -9,15 +9,13 @@ import {
   Menu, 
   Sparkles,
   Search,
-  SlidersHorizontal,
-  FolderOpen
+  SlidersHorizontal
 } from 'lucide-react';
 import { AgungLogo } from './AgungLogo';
 
-interface MenuItem {
+export interface NavMenuItem {
   id: string;
   label: string;
-  shortLabel: string;
   icon: React.ComponentType<{ className?: string }>;
   tooltip?: string;
 }
@@ -25,22 +23,28 @@ interface MenuItem {
 interface NavbarProps {
   activeSection: string;
   onNavigate: (sectionId: string) => void;
-  slideMode: boolean;
-  onToggleSlideMode: () => void;
   onOpenSearch: () => void;
-  onOpenMenuDrawer: () => void;
-  modularView?: boolean;
-  onToggleModularView?: () => void;
+  onOpenSidebar: () => void;
+  modularView: boolean;
+  onToggleModularView: () => void;
 }
+
+export const navMenuItems: NavMenuItem[] = [
+  { id: 'hero', label: 'Judul', icon: BookOpen, tooltip: 'Halaman Utama & Judul' },
+  { id: 'konsep', label: 'Konsep AI', icon: Sparkles, tooltip: 'Gambar 1: Konsep Dasar AI & Definisi IBM' },
+  { id: 'ruang-lingkup', label: 'Ruang Lingkup', icon: Layers, tooltip: 'Gambar 2: 7 Cabang Ruang Lingkup AI' },
+  { id: 'sejarah', label: 'Sejarah AI', icon: History, tooltip: 'Gambar 3: Linimasa Sejarah AI 1956-2026' },
+  { id: 'taksonomi', label: 'AI vs ML', icon: GitFork, tooltip: 'Taksonomi AI vs Machine Learning' },
+  { id: 'kuis', label: 'Uji Pemahaman', icon: HelpCircle, tooltip: 'Evaluasi Kuis Interaktif 10 Soal' },
+  { id: 'referensi', label: 'Sumber Valid', icon: FileText, tooltip: 'Daftar Pustaka & Literatur Valid' }
+];
 
 export const Navbar: React.FC<NavbarProps> = ({
   activeSection,
   onNavigate,
-  slideMode,
-  onToggleSlideMode,
   onOpenSearch,
-  onOpenMenuDrawer,
-  modularView = true,
+  onOpenSidebar,
+  modularView,
   onToggleModularView
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -53,17 +57,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 7 Bab Materi AI dalam 1 Navbar Tunggal yang Ringkas & Rapi
-  const navItems: MenuItem[] = [
-    { id: 'hero', label: 'Judul', shortLabel: 'Judul', icon: BookOpen, tooltip: 'Halaman Utama & Judul' },
-    { id: 'konsep', label: 'Konsep AI', shortLabel: 'Konsep', icon: Sparkles, tooltip: 'Gambar 1: Konsep Dasar AI & Definisi IBM' },
-    { id: 'ruang-lingkup', label: 'Ruang Lingkup', shortLabel: 'Lingkup', icon: Layers, tooltip: 'Gambar 2: 7 Cabang Ruang Lingkup AI' },
-    { id: 'sejarah', label: 'Sejarah AI', shortLabel: 'Sejarah', icon: History, tooltip: 'Gambar 3: Linimasa Sejarah AI 1956-2026' },
-    { id: 'taksonomi', label: 'AI vs ML', shortLabel: 'AI vs ML', icon: GitFork, tooltip: 'Taksonomi AI vs Machine Learning' },
-    { id: 'kuis', label: 'Kuis AI', shortLabel: 'Kuis', icon: HelpCircle, tooltip: 'Evaluasi Pemahaman 10 Soal' },
-    { id: 'referensi', label: 'Pustaka', shortLabel: 'Pustaka', icon: FileText, tooltip: 'Sumber Literatur & Rujukan Valid' }
-  ];
-
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
@@ -72,8 +65,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           : 'bg-slate-950/90 backdrop-blur-sm border-b border-slate-800/70'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20 gap-2">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-20 gap-3">
           
           {/* Logo & Brand Left */}
           <div 
@@ -82,18 +75,21 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <AgungLogo size={36} variant="badge" glow={true} />
             <div>
-              <span className="text-sm sm:text-base font-bold text-white tracking-tight flex items-center gap-1.5 group-hover:text-cyan-300 transition-colors">
+              <span className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-1.5 group-hover:text-cyan-300 transition-colors">
                 AGUNGPROJECT<span className="text-cyan-400">.ID</span>
                 <span className="hidden xl:inline-block text-[9px] uppercase font-bold px-1.5 py-0.5 rounded bg-blue-500/20 text-cyan-300 border border-blue-400/30">
                   Edukasi AI
                 </span>
               </span>
+              <p className="text-[10px] text-slate-400 hidden xl:block leading-none">
+                Konsep • Ruang Lingkup • Sejarah • Taksonomi
+              </p>
             </div>
           </div>
 
-          {/* Desktop Center: Satu-satunya Bilah Bab Materi (Tidak Dobel) */}
+          {/* PC Desktop Menu: 7 Bab Materi Lengkap */}
           <nav className="hidden lg:flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-700/80 shadow-inner">
-            {navItems.map((item) => {
+            {navMenuItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeSection === item.id;
               return (
@@ -114,73 +110,45 @@ export const Navbar: React.FC<NavbarProps> = ({
             })}
           </nav>
 
-          {/* Right Action Controls */}
+          {/* Right Controls: Mode Bab Toggle, Cari, Hamburger */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             
-            {/* Tombol Buka 1 Sidebar Tunggal */}
+            {/* Mode Bab / Modular Toggle */}
             <button
-              onClick={onOpenMenuDrawer}
-              className="px-2.5 sm:px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs flex items-center gap-1.5 transition-all shadow-md shadow-blue-900/40 border border-blue-400/40 shrink-0"
-              title="Buka Daftar Menu & Bab"
-            >
-              <FolderOpen className="w-3.5 h-3.5 text-cyan-200 shrink-0" />
-              <span>Daftar Bab</span>
-              <span className="bg-blue-800/90 text-[10px] px-1.5 py-0.5 rounded-full font-bold">
-                7
-              </span>
-            </button>
-
-            {/* Mode Modul / Scroll Toggle (Desktop) */}
-            {onToggleModularView && (
-              <button
-                onClick={onToggleModularView}
-                className={`hidden md:flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
-                  modularView 
-                    ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40' 
-                    : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
-                }`}
-                title="Beralih Mode Modul atau Scroll"
-              >
-                <SlidersHorizontal className="w-3 h-3 text-cyan-400" />
-                <span>{modularView ? 'Modul' : 'Scroll'}</span>
-              </button>
-            )}
-
-            {/* Slide Mode Toggle */}
-            <button
-              onClick={onToggleSlideMode}
-              className={`flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
-                slideMode 
-                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/50 shadow-sm shadow-amber-500/20' 
+              onClick={onToggleModularView}
+              className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                modularView 
+                  ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40 shadow-sm shadow-cyan-500/10' 
                   : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white hover:bg-slate-800'
               }`}
-              title="Tampilkan format slide asli"
+              title="Beralih antara Mode Bab (tampil per bab) atau Mode Scroll (tampil semua)"
             >
-              <span className="text-amber-400 font-bold">S</span>
-              <span className="hidden sm:inline">
-                {slideMode ? 'Slide On' : 'Slide'}
-              </span>
+              <SlidersHorizontal className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+              <span>{modularView ? 'Mode Bab' : 'Mode Scroll'}</span>
             </button>
 
             {/* Search Button */}
             <button
               onClick={onOpenSearch}
               aria-label="Cari Materi"
-              className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg text-slate-300 bg-slate-900 hover:bg-slate-800 hover:text-white border border-slate-700 transition-colors flex items-center gap-1 text-xs"
+              className="p-1.5 sm:px-3 sm:py-1.5 rounded-lg text-slate-300 bg-slate-900 hover:bg-slate-800 hover:text-white border border-slate-700 transition-colors flex items-center gap-1.5 text-xs"
               title="Cari materi AI (Tekan /)..."
             >
-              <Search className="w-3.5 h-3.5 text-cyan-400" />
-              <span className="hidden sm:inline">Cari</span>
+              <Search className="w-4 h-4 text-cyan-400" />
+              <span className="hidden md:inline">Cari</span>
+              <kbd className="hidden md:inline-block text-[9px] bg-slate-800 text-slate-400 px-1 rounded border border-slate-700">
+                /
+              </kbd>
             </button>
 
-            {/* Mobile Hamburger Button: Juga Membuka 1 Sidebar Tunggal Yang Sama */}
+            {/* Mobile / Tablet Hamburger Button: List item menghilang, lalu muncul hamburger yang mentrigger sidebar */}
             <button
-              onClick={onOpenMenuDrawer}
-              className="lg:hidden p-1.5 rounded-lg text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:bg-slate-800 transition-colors"
+              onClick={onOpenSidebar}
+              className="lg:hidden p-2 rounded-lg text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:bg-slate-800 transition-colors flex items-center justify-center"
               aria-label="Buka Menu Sidebar"
-              title="Buka Menu"
+              title="Buka Menu Navigasi"
             >
-              <Menu className="w-5 h-5" />
+              <Menu className="w-5 h-5 text-cyan-300" />
             </button>
 
           </div>

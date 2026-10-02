@@ -101,7 +101,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               <Sparkles className="w-5 h-5" />
             </div>
             <div className="text-xs font-semibold text-blue-400 uppercase tracking-wider mb-1">
-              Gambar 1 (Slide 1)
+              Materi Bab 1
             </div>
             <h2 className="text-base font-bold text-white group-hover:text-blue-300 transition-colors">
               Konsep AI & Definisi IBM
@@ -119,7 +119,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               <Layers className="w-5 h-5" />
             </div>
             <div className="text-xs font-semibold text-cyan-400 uppercase tracking-wider mb-1">
-              Gambar 2 (Slide 2)
+              Materi Bab 2
             </div>
             <h2 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
               Ruang Lingkup & 7 Cabang AI
@@ -137,7 +137,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               <History className="w-5 h-5" />
             </div>
             <div className="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-1">
-              Gambar 3 (Slide 3)
+              Materi Bab 3
             </div>
             <h2 className="text-base font-bold text-white group-hover:text-amber-300 transition-colors">
               Sejarah Perkembangan AI

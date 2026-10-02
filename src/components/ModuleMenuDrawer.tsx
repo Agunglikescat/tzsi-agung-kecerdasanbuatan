@@ -39,7 +39,7 @@ export const MODULE_ITEMS: ModuleItem[] = [
     number: 2,
     label: 'Gambar 1: Konsep AI & Definisi IBM',
     shortLabel: '1. Konsep',
-    badge: 'Slide 1',
+    badge: 'Gambar 1',
     icon: Sparkles,
     description: 'Konsep dasar kecerdasan buatan, pandangan IBM, dan 4 kuadran AI.'
   },
@@ -48,7 +48,7 @@ export const MODULE_ITEMS: ModuleItem[] = [
     number: 3,
     label: 'Gambar 2: Ruang Lingkup AI & 7 Cabang',
     shortLabel: '2. Lingkup',
-    badge: 'Slide 2',
+    badge: 'Gambar 2',
     icon: Layers,
     description: 'Klasifikasi 7 cabang utama AI (ML, NLP, Computer Vision, Robotika, dll).'
   },
@@ -57,7 +57,7 @@ export const MODULE_ITEMS: ModuleItem[] = [
     number: 4,
     label: 'Gambar 3: Sejarah Perkembangan AI',
     shortLabel: '3. Sejarah',
-    badge: 'Slide 3',
+    badge: 'Gambar 3',
     icon: History,
     description: 'Linimasa sejarah dari Dartmouth 1956, AI Winter, hingga Hadiah Nobel 2024.'
   },
@@ -196,21 +196,20 @@ export const ModuleMenuDrawer: React.FC<ModuleMenuDrawerProps> = ({
           })}
         </div>
 
-        {/* Footer: Simple Mode Toggle without bloat */}
+        {/* Footer: Mode Bab Toggle */}
         <div className="p-3.5 sm:p-4 bg-slate-950 border-t border-slate-800 shrink-0">
           <button
             onClick={() => {
               onToggleModularView();
-              onClose();
             }}
             className="w-full flex items-center justify-between p-2.5 rounded-lg text-xs font-semibold bg-slate-850 hover:bg-slate-800 text-slate-200 border border-slate-700 transition-colors"
           >
             <div className="flex items-center gap-2">
               <SlidersHorizontal className="w-4 h-4 text-cyan-400" />
-              <span>Tampilan: {modularView ? 'Mode Modul (Per Bab)' : 'Mode Scroll Semua'}</span>
+              <span>Tampilan: {modularView ? 'Mode Bab (Per Bab)' : 'Mode Scroll Semua'}</span>
             </div>
-            <span className="text-[10px] text-cyan-300 underline font-normal">
-              Ubah
+            <span className="text-[10px] text-cyan-300 font-bold px-1.5 py-0.5 rounded bg-slate-900 border border-slate-700">
+              Ganti
             </span>
           </button>
         </div>
