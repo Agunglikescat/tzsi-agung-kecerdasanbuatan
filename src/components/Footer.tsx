@@ -26,7 +26,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </span>
             </div>
             <p className="text-slate-400 text-xs leading-relaxed max-w-md">
-              Platform edukasi interaktif berbasis web untuk mempelajari Konsep AI (Gambar 1), Ruang Lingkup dan 7 Cabang Utama (Gambar 2), Sejarah Perkembangan AI dari 1956 hingga Era Nobel & AI Agents (Gambar 3), serta Taksonomi AI vs Machine Learning dengan rujukan ilmiah terverifikasi.
+              Platform edukasi interaktif berbasis web untuk mempelajari Konsep Dasar AI, Ruang Lingkup dan 7 Cabang Utama, Sejarah Perkembangan AI dari 1956 hingga Era Nobel & AI Agents, serta Taksonomi AI vs Machine Learning dengan rujukan ilmiah terverifikasi.
             </p>
             <div className="flex items-center gap-2 text-[11px] text-emerald-400 font-mono">
               <ShieldCheck className="w-3.5 h-3.5" />
@@ -42,17 +42,17 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <ul className="space-y-1.5 text-xs">
               <li>
                 <button onClick={() => onNavigate('konsep')} className="hover:text-cyan-400 transition-colors">
-                  Gambar 1: Konsep AI & IBM
+                  Konsep AI & Definisi IBM
                 </button>
               </li>
               <li>
                 <button onClick={() => onNavigate('ruang-lingkup')} className="hover:text-cyan-400 transition-colors">
-                  Gambar 2: Ruang Lingkup (7 Cabang)
+                  Ruang Lingkup (7 Cabang)
                 </button>
               </li>
               <li>
                 <button onClick={() => onNavigate('sejarah')} className="hover:text-cyan-400 transition-colors">
-                  Gambar 3: Sejarah Perkembangan AI
+                  Sejarah Perkembangan AI
                 </button>
               </li>
               <li>

@@ -80,7 +80,7 @@ export const HistorySection: React.FC<HistorySectionProps> = ({ onNavigateToNext
             <div className="flex items-center gap-3 flex-wrap mb-2">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold">
                 <History className="w-3.5 h-3.5 text-amber-400" />
-                <span>Materi Pokok Gambar 3</span>
+                <span>Sejarah Perkembangan AI</span>
               </div>
               <QuickFactBadge sectionId="sejarah" variant="inline" />
             </div>
@@ -284,7 +284,7 @@ export const HistorySection: React.FC<HistorySectionProps> = ({ onNavigateToNext
                   <div className="bg-slate-900 p-5 rounded-xl border border-slate-700/80 space-y-3">
                     <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
                       <BookmarkCheck className="w-4 h-4" />
-                      Poin Inti Materi Gambar 3:
+                      Poin Inti Sejarah AI:
                     </span>
                     <ul className="space-y-2.5">
                       {selectedMilestone.bulletPoints.map((bp, i) => (
@@ -390,7 +390,7 @@ export const HistorySection: React.FC<HistorySectionProps> = ({ onNavigateToNext
         )}
 
         {/* ============================================================== */}
-        {/* SLIDE PRESENTATION REPLICA VIEW (2 Kolom persis Gambar 3) */}
+        {/* RANGKUMAN SEJARAH AI (2 Kolom) */}
         {/* ============================================================== */}
         {activeView === 'slide' && (
           <div className="rounded-2xl overflow-hidden shadow-2xl border border-slate-700 bg-white text-slate-800 transition-all mb-8 animate-in fade-in duration-300">
@@ -398,7 +398,7 @@ export const HistorySection: React.FC<HistorySectionProps> = ({ onNavigateToNext
             {/* Header Banner - Exact replica of user's dark navy header */}
             <div className="bg-[#0b162c] text-white py-6 px-6 text-center relative border-b-2 border-amber-500/40">
               <div className="absolute top-2 left-4 text-[10px] text-amber-300/80 font-mono tracking-wider uppercase">
-                Materi Pokok • Gambar 3
+                Modul Pembelajaran AI
               </div>
               <h3 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow-sm font-sans">
                 Sejarah Perkembangan AI

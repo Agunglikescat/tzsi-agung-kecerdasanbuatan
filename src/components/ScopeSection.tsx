@@ -60,7 +60,7 @@ export const ScopeSection: React.FC<ScopeSectionProps> = ({ onNavigateToNext }) 
             <div className="flex items-center gap-3 flex-wrap mb-2">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold">
                 <Layers className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Materi Pokok Gambar 2</span>
+                <span>Ruang Lingkup AI</span>
               </div>
               <QuickFactBadge sectionId="ruang-lingkup" variant="inline" />
             </div>
@@ -93,7 +93,7 @@ export const ScopeSection: React.FC<ScopeSectionProps> = ({ onNavigateToNext }) 
           {/* Header Banner - Exact replica of user's dark navy header */}
           <div className="bg-[#0b162c] text-white py-6 px-6 text-center relative border-b-2 border-cyan-500/40">
             <div className="absolute top-2 left-4 text-[10px] text-cyan-300/80 font-mono tracking-wider uppercase">
-              Materi Pokok • Gambar 2
+              Modul Pembelajaran AI
             </div>
             <h3 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow-sm font-sans">
               Ruang Lingkup AI
@@ -294,7 +294,7 @@ export const ScopeSection: React.FC<ScopeSectionProps> = ({ onNavigateToNext }) 
             onClick={onNavigateToNext}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 font-semibold text-xs transition-all group"
           >
-            <span>Lanjut ke Gambar 3: Sejarah Perkembangan AI</span>
+            <span>Lanjut ke Bagian: Sejarah Perkembangan AI</span>
             <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>

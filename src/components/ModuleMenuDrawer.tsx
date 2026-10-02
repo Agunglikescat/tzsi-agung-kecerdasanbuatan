@@ -10,9 +10,12 @@ import {
   HelpCircle, 
   FileText, 
   CheckCircle2, 
-  SlidersHorizontal
+  SlidersHorizontal,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { AgungLogo } from './AgungLogo';
+import { useTheme } from '../context/ThemeContext';
 
 export interface ModuleItem {
   id: string;
@@ -37,27 +40,27 @@ export const MODULE_ITEMS: ModuleItem[] = [
   {
     id: 'konsep',
     number: 2,
-    label: 'Gambar 1: Konsep AI & Definisi IBM',
+    label: 'Konsep AI & Definisi IBM',
     shortLabel: '1. Konsep',
-    badge: 'Gambar 1',
+    badge: 'Bab 1',
     icon: Sparkles,
     description: 'Konsep dasar kecerdasan buatan, pandangan IBM, dan 4 kuadran AI.'
   },
   {
     id: 'ruang-lingkup',
     number: 3,
-    label: 'Gambar 2: Ruang Lingkup AI & 7 Cabang',
+    label: 'Ruang Lingkup AI & 7 Cabang',
     shortLabel: '2. Lingkup',
-    badge: 'Gambar 2',
+    badge: 'Bab 2',
     icon: Layers,
     description: 'Klasifikasi 7 cabang utama AI (ML, NLP, Computer Vision, Robotika, dll).'
   },
   {
     id: 'sejarah',
     number: 4,
-    label: 'Gambar 3: Sejarah Perkembangan AI',
+    label: 'Sejarah Perkembangan AI',
     shortLabel: '3. Sejarah',
-    badge: 'Gambar 3',
+    badge: 'Bab 3',
     icon: History,
     description: 'Linimasa sejarah dari Dartmouth 1956, AI Winter, hingga Hadiah Nobel 2024.'
   },
@@ -107,6 +110,7 @@ export const ModuleMenuDrawer: React.FC<ModuleMenuDrawerProps> = ({
   modularView,
   onToggleModularView
 }) => {
+  const { theme, toggleTheme } = useTheme();
   if (!isOpen) return null;
 
   return (
@@ -196,8 +200,27 @@ export const ModuleMenuDrawer: React.FC<ModuleMenuDrawerProps> = ({
           })}
         </div>
 
-        {/* Footer: Mode Bab Toggle */}
-        <div className="p-3.5 sm:p-4 bg-slate-950 border-t border-slate-800 shrink-0">
+        {/* Footer: Mode Bab Toggle & Dark/Light Toggle */}
+        <div className="p-3.5 sm:p-4 bg-slate-950 border-t border-slate-800 shrink-0 space-y-2">
+          {/* Theme Toggle Button */}
+          <button
+            onClick={toggleTheme}
+            className="w-full flex items-center justify-between p-2.5 rounded-lg text-xs font-semibold bg-slate-850 hover:bg-slate-800 text-slate-200 border border-slate-700 transition-colors"
+          >
+            <div className="flex items-center gap-2">
+              {theme === 'dark' ? (
+                <Moon className="w-4 h-4 text-amber-300" />
+              ) : (
+                <Sun className="w-4 h-4 text-amber-500" />
+              )}
+              <span>Tema: {theme === 'dark' ? 'Mode Gelap (Cosmic)' : 'Mode Terang (Clean)'}</span>
+            </div>
+            <span className="text-[10px] text-cyan-300 font-bold px-2 py-0.5 rounded bg-slate-900 border border-slate-700">
+              {theme === 'dark' ? 'GELAP' : 'TERANG'}
+            </span>
+          </button>
+
+          {/* Mode Bab / Modular Toggle */}
           <button
             onClick={() => {
               onToggleModularView();

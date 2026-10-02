@@ -42,7 +42,7 @@ export const ConceptSection: React.FC<ConceptSectionProps> = ({
             <div className="flex items-center gap-3 flex-wrap mb-2">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-300 text-xs font-semibold">
                 <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-                <span>Materi Pokok Gambar 1</span>
+                <span>Konsep Dasar AI</span>
               </div>
               <QuickFactBadge sectionId="konsep" variant="inline" />
             </div>
@@ -90,14 +90,14 @@ export const ConceptSection: React.FC<ConceptSectionProps> = ({
         </div>
 
         {/* ============================================================== */}
-        {/* REPLICA OF USER'S GAMBAR 1 (Konsep AI) */}
+        {/* MODUL KONSEP DASAR AI */}
         {/* ============================================================== */}
         <div className="rounded-2xl overflow-hidden shadow-2xl border border-slate-700 bg-white text-slate-800 transition-all">
           
           {/* Header Banner - Exact replica of user's dark navy header */}
           <div className="bg-[#0b162c] text-white py-6 px-6 text-center relative border-b-2 border-cyan-500/40">
             <div className="absolute top-2 left-4 text-[10px] text-cyan-300/80 font-mono tracking-wider uppercase">
-              Materi Pokok • Gambar 1
+              Modul Pembelajaran AI
             </div>
             <h3 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow-sm font-sans">
               Konsep AI
@@ -369,7 +369,7 @@ export const ConceptSection: React.FC<ConceptSectionProps> = ({
             onClick={onNavigateToNext}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 font-semibold text-xs transition-all group"
           >
-            <span>Lanjut ke Gambar 2: Ruang Lingkup AI</span>
+            <span>Lanjut ke Bagian: Ruang Lingkup AI</span>
             <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>

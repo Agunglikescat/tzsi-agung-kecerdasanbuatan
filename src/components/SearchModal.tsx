@@ -82,11 +82,11 @@ export const SearchModal: React.FC<SearchModalProps> = ({
               </span>
               <div className="flex flex-wrap gap-2">
                 {[
-                  { text: 'Konsep AI (Gambar 1)', section: 'konsep' },
+                  { text: 'Konsep Dasar AI', section: 'konsep' },
                   { text: 'Definisi IBM', section: 'konsep' },
-                  { text: 'Ruang Lingkup (Gambar 2)', section: 'ruang-lingkup' },
+                  { text: 'Ruang Lingkup (7 Cabang)', section: 'ruang-lingkup' },
                   { text: 'Deep Learning', section: 'ruang-lingkup' },
-                  { text: 'Sejarah Perkembangan (Gambar 3)', section: 'sejarah' },
+                  { text: 'Sejarah Perkembangan AI', section: 'sejarah' },
                   { text: 'Konferensi Dartmouth 1956', section: 'sejarah' },
                   { text: 'Nobel Prize 2024', section: 'sejarah' },
                   { text: 'AI vs ML (Taksonomi)', section: 'taksonomi' },

@@ -9,9 +9,12 @@ import {
   Menu, 
   Sparkles,
   Search,
-  SlidersHorizontal
+  SlidersHorizontal,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { AgungLogo } from './AgungLogo';
+import { useTheme } from '../context/ThemeContext';
 
 export interface NavMenuItem {
   id: string;
@@ -31,9 +34,9 @@ interface NavbarProps {
 
 export const navMenuItems: NavMenuItem[] = [
   { id: 'hero', label: 'Judul', icon: BookOpen, tooltip: 'Halaman Utama & Judul' },
-  { id: 'konsep', label: 'Konsep AI', icon: Sparkles, tooltip: 'Gambar 1: Konsep Dasar AI & Definisi IBM' },
-  { id: 'ruang-lingkup', label: 'Ruang Lingkup', icon: Layers, tooltip: 'Gambar 2: 7 Cabang Ruang Lingkup AI' },
-  { id: 'sejarah', label: 'Sejarah AI', icon: History, tooltip: 'Gambar 3: Linimasa Sejarah AI 1956-2026' },
+  { id: 'konsep', label: 'Konsep AI', icon: Sparkles, tooltip: 'Konsep Dasar AI & Definisi IBM' },
+  { id: 'ruang-lingkup', label: 'Ruang Lingkup', icon: Layers, tooltip: '7 Cabang Ruang Lingkup AI' },
+  { id: 'sejarah', label: 'Sejarah AI', icon: History, tooltip: 'Linimasa Sejarah AI 1956-2026' },
   { id: 'taksonomi', label: 'AI vs ML', icon: GitFork, tooltip: 'Taksonomi AI vs Machine Learning' },
   { id: 'kuis', label: 'Uji Pemahaman', icon: HelpCircle, tooltip: 'Evaluasi Kuis Interaktif 10 Soal' },
   { id: 'referensi', label: 'Sumber Valid', icon: FileText, tooltip: 'Daftar Pustaka & Literatur Valid' }
@@ -47,6 +50,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   modularView,
   onToggleModularView
 }) => {
+  const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -139,6 +143,26 @@ export const Navbar: React.FC<NavbarProps> = ({
               <kbd className="hidden md:inline-block text-[9px] bg-slate-800 text-slate-400 px-1 rounded border border-slate-700">
                 /
               </kbd>
+            </button>
+
+            {/* Theme Toggle Button (Mode Gelap / Terang) */}
+            <button
+              onClick={toggleTheme}
+              aria-label={theme === 'dark' ? 'Beralih ke Mode Terang' : 'Beralih ke Mode Gelap'}
+              title={theme === 'dark' ? 'Mode Gelap Aktif (Klik untuk Mode Terang)' : 'Mode Terang Aktif (Klik untuk Mode Gelap)'}
+              className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg text-slate-300 hover:text-white bg-slate-900 hover:bg-slate-800 border border-slate-700 transition-all flex items-center gap-1.5 text-xs"
+            >
+              {theme === 'dark' ? (
+                <>
+                  <Moon className="w-4 h-4 text-amber-300" />
+                  <span className="hidden xl:inline text-[11px] font-semibold text-amber-200">Gelap</span>
+                </>
+              ) : (
+                <>
+                  <Sun className="w-4 h-4 text-amber-500" />
+                  <span className="hidden xl:inline text-[11px] font-semibold text-slate-700">Terang</span>
+                </>
+              )}
             </button>
 
             {/* Mobile / Tablet Hamburger Button: List item menghilang, lalu muncul hamburger yang mentrigger sidebar */}

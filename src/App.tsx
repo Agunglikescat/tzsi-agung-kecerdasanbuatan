@@ -15,8 +15,10 @@ import { ModuleFooterNavigator } from './components/ModuleFooterNavigator';
 import { 
   ArrowUp 
 } from 'lucide-react';
+import { useTheme } from './context/ThemeContext';
 
 export default function App() {
+  const { theme } = useTheme();
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [modularView, setModularView] = useState<boolean>(true); // Default true: Buka per menu tanpa scroll panjang
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
@@ -94,7 +96,7 @@ export default function App() {
   }, [isSearchOpen]);
 
   return (
-    <div className="min-h-screen bg-[#060814] text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-950 relative overflow-x-hidden">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-[#060814] text-slate-100' : 'bg-slate-50 text-slate-800'} flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-950 relative overflow-x-hidden transition-colors duration-300`}>
       {/* Dynamic Animated Cosmic Particles & Glowing Bokeh Background */}
       <CosmicParticlesBackground />
 

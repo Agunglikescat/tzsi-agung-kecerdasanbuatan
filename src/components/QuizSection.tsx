@@ -64,7 +64,7 @@ export const QuizSection: React.FC<QuizSectionProps> = ({ onNavigateToNext }) =>
             Kuis Interaktif AI: Uji Pemahaman Anda
           </h2>
           <p className="text-slate-400 text-sm mt-1 max-w-xl mx-auto">
-            Uji pemahaman Anda seputar Konsep AI (Gambar 1), Ruang Lingkup (Gambar 2), Sejarah (Gambar 3), dan Taksonomi AI vs ML.
+            Uji pemahaman Anda seputar Konsep Dasar AI, Ruang Lingkup 7 Cabang, Linimasa Sejarah, dan Taksonomi AI vs ML.
           </p>
         </div>
 
