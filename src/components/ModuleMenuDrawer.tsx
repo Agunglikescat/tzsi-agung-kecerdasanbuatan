@@ -22,6 +22,7 @@ export interface ModuleItem {
   id: string;
   number: number;
   label: string;
+  shortLabel?: string;
   badge?: string;
   icon: React.ComponentType<{ className?: string }>;
   description: string;
@@ -33,6 +34,7 @@ export const MODULE_ITEMS: ModuleItem[] = [
     id: 'hero',
     number: 1,
     label: 'Halaman Judul & Ringkasan',
+    shortLabel: 'Judul',
     badge: 'Overview',
     icon: BookOpen,
     description: 'Judul kurikulum, pengenalan portal edukasi, dan akses cepat ke seluruh materi.',
@@ -47,6 +49,7 @@ export const MODULE_ITEMS: ModuleItem[] = [
     id: 'konsep',
     number: 2,
     label: 'Gambar 1: Konsep AI',
+    shortLabel: '1. Konsep AI',
     badge: 'Slide 1',
     icon: Sparkles,
     description: 'Konsep dasar kecerdasan buatan, definisi IBM, pernyataan John McCarthy, dan 4 kuadran AI.',
@@ -62,6 +65,7 @@ export const MODULE_ITEMS: ModuleItem[] = [
     id: 'ruang-lingkup',
     number: 3,
     label: 'Gambar 2: Ruang Lingkup AI',
+    shortLabel: '2. Ruang Lingkup',
     badge: 'Slide 2',
     icon: Layers,
     description: 'Klasifikasi 7 cabang utama kecerdasan buatan berdasarkan literatur ilmiah terverifikasi.',
@@ -79,6 +83,7 @@ export const MODULE_ITEMS: ModuleItem[] = [
     id: 'sejarah',
     number: 4,
     label: 'Gambar 3: Sejarah AI',
+    shortLabel: '3. Sejarah AI',
     badge: 'Slide 3',
     icon: History,
     description: 'Linimasa kronologis perkembangan AI dari Konferensi Dartmouth 1956 hingga era Hadiah Nobel & AI Agents.',
@@ -95,6 +100,7 @@ export const MODULE_ITEMS: ModuleItem[] = [
     id: 'taksonomi',
     number: 5,
     label: 'AI vs Machine Learning',
+    shortLabel: '4. AI vs ML',
     badge: 'Taksonomi',
     icon: GitFork,
     description: 'Hubungan hierarki himpunan bagian, diagram relasional, dan perbandingan matriks komprehensif.',
@@ -109,6 +115,7 @@ export const MODULE_ITEMS: ModuleItem[] = [
     id: 'kuis',
     number: 6,
     label: 'Kuis Interaktif Uji Pemahaman',
+    shortLabel: '5. Kuis AI',
     badge: '10 Soal',
     icon: HelpCircle,
     description: 'Evaluasi pemahaman konsep dengan 10 soal skenario berbobot ilmiah beserta pembahasannya.',
@@ -122,6 +129,7 @@ export const MODULE_ITEMS: ModuleItem[] = [
     id: 'referensi',
     number: 7,
     label: 'Daftar Pustaka & Literatur Valid',
+    shortLabel: '6. Pustaka',
     badge: 'Sumber',
     icon: FileText,
     description: 'Dokumentasi kutipan lengkap buku teks standar universitas dan makalah penemu orisinal.',

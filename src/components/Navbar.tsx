@@ -161,11 +161,11 @@ export const Navbar: React.FC<NavbarProps> = ({
               {onOpenMenuDrawer && (
                 <button
                   onClick={onOpenMenuDrawer}
-                  className="px-2.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs flex items-center gap-1.5 transition-all shadow-sm shadow-blue-900/30 border border-blue-400/40"
+                  className="px-2 sm:px-2.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs flex items-center gap-1.5 transition-all shadow-sm shadow-blue-900/30 border border-blue-400/40 shrink-0"
                   title="Buka Daftar Menu & Bab yang bisa dibuka"
                 >
-                  <Compass className="w-3.5 h-3.5 text-cyan-200" />
-                  <span className="hidden sm:inline">Menu Bab</span>
+                  <Compass className="w-3.5 h-3.5 text-cyan-200 shrink-0" />
+                  <span className="text-[11px] sm:text-xs">Menu Bab</span>
                 </button>
               )}
 
@@ -173,10 +173,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 onClick={onOpenSearch}
                 aria-label="Cari Materi"
-                className="p-2 sm:px-2.5 sm:py-1.5 rounded-lg text-slate-300 bg-slate-900 hover:bg-slate-800 hover:text-white border border-slate-700 transition-colors flex items-center gap-1.5 text-xs"
+                className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg text-slate-300 bg-slate-900 hover:bg-slate-800 hover:text-white border border-slate-700 transition-colors flex items-center gap-1 text-xs shrink-0"
                 title="Cari materi AI (Tekan /)..."
               >
-                <Search className="w-3.5 h-3.5 text-cyan-400" />
+                <Search className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
                 <span className="hidden sm:inline">Cari</span>
                 <kbd className="hidden sm:inline-block text-[9px] bg-slate-800 text-slate-400 px-1 rounded border border-slate-700">
                   /
@@ -186,14 +186,14 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Slide Mode Toggle */}
               <button
                 onClick={onToggleSlideMode}
-                className={`flex items-center gap-1 p-2 sm:px-2.5 sm:py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                className={`flex items-center gap-1 p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg text-xs font-semibold border transition-all shrink-0 ${
                   slideMode 
                     ? 'bg-amber-500/20 text-amber-300 border-amber-500/50 shadow-sm shadow-amber-500/20' 
                     : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white hover:bg-slate-800'
                 }`}
                 title="Tampilkan replika slide presentasi persis foto"
               >
-                <SlidersHorizontal className="w-3.5 h-3.5 text-amber-400" />
+                <SlidersHorizontal className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                 <span className="hidden md:inline">
                   {slideMode ? 'Slide On' : 'Slide'}
                 </span>
@@ -202,7 +202,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Mobile Hamburger Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2 rounded-lg text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:bg-slate-800 transition-colors"
+                className="lg:hidden p-1.5 sm:p-2 rounded-lg text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:bg-slate-800 transition-colors shrink-0"
                 aria-label="Toggle Menu"
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -210,31 +210,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             </div>
           </div>
-        </div>
-
-        {/* ============================================================== */}
-        {/* MOBILE DEDICATED QUICK-JUMP BAR UNDER HEADER */}
-        {/* (Memastikan versi mobile langsung punya menu judul, gambar 1, 2, 3 di atas) */}
-        {/* ============================================================== */}
-        <div className="lg:hidden border-t border-slate-800/80 bg-slate-950/95 px-2 py-1.5 overflow-x-auto scrollbar-none flex items-center gap-1.5">
-          {primaryMenuItems.map((item) => {
-            const isActive = activeSection === item.id;
-            const Icon = item.icon;
-            return (
-              <button
-                key={item.id}
-                onClick={() => onNavigate(item.id)}
-                className={`shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all border ${
-                  isActive
-                    ? 'bg-blue-600 text-white border-blue-400 shadow-sm shadow-blue-500/30'
-                    : 'bg-slate-900 text-slate-300 border-slate-800 hover:bg-slate-800'
-                }`}
-              >
-                <Icon className="w-3 h-3 text-cyan-400" />
-                <span>{item.shortLabel}</span>
-              </button>
-            );
-          })}
         </div>
 
         {/* Mobile Full Navigation Drawer */}
