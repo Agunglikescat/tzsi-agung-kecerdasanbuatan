@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Lightbulb, 
   X, 
@@ -223,26 +223,39 @@ export const QuickFactBadge: React.FC<QuickFactBadgeProps> = ({
   const [copied, setCopied] = useState(false);
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  const cardRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement | HTMLDivElement>(null);
 
   const currentFact = facts[currentFactIndex] || facts[0];
 
-  // Prevent background scroll when modal/bottom-sheet is open on mobile
+  // Menutup popup saat klik di luar kartu, dan navigasi keyboard
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') setIsOpen(false);
-        if (e.key === 'ArrowRight') setCurrentFactIndex(prev => (prev + 1) % facts.length);
-        if (e.key === 'ArrowLeft') setCurrentFactIndex(prev => (prev - 1 + facts.length) % facts.length);
-      };
-      window.addEventListener('keydown', handleKeyDown);
-      return () => {
-        document.body.style.overflow = '';
-        window.removeEventListener('keydown', handleKeyDown);
-      };
-    } else {
-      document.body.style.overflow = '';
-    }
+    if (!isOpen) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        cardRef.current && 
+        !cardRef.current.contains(e.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(e.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+      if (e.key === 'ArrowRight') setCurrentFactIndex(prev => (prev + 1) % facts.length);
+      if (e.key === 'ArrowLeft') setCurrentFactIndex(prev => (prev - 1 + facts.length) % facts.length);
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [isOpen, facts.length]);
 
   const handleNext = (e: React.MouseEvent) => {
@@ -265,10 +278,11 @@ export const QuickFactBadge: React.FC<QuickFactBadgeProps> = ({
 
   return (
     <>
-      {/* Trigger Button depending on variant */}
+      {/* Trigger Button */}
       {variant === 'banner' ? (
         <div 
-          onClick={() => setIsOpen(true)}
+          ref={buttonRef as React.RefObject<HTMLDivElement>}
+          onClick={() => setIsOpen(!isOpen)}
           className={`cursor-pointer group flex items-center justify-between gap-3 p-3 sm:p-3.5 rounded-xl transition-all shadow-sm active:scale-[0.98] select-none ${
             isDark 
               ? 'bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/30 hover:border-amber-400/60 shadow-amber-950/20' 
@@ -298,19 +312,22 @@ export const QuickFactBadge: React.FC<QuickFactBadgeProps> = ({
             </div>
           </div>
           <span className={`text-[11px] font-bold flex items-center gap-1 shrink-0 ${isDark ? 'text-amber-300' : 'text-amber-700'}`}>
-            <span className="hidden xs:inline">Buka Fakta</span>
-            <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            <span className="hidden xs:inline">{isOpen ? 'Tutup' : 'Buka Fakta'}</span>
+            <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isOpen ? 'rotate-90' : 'group-hover:translate-x-0.5'}`} />
           </span>
         </div>
       ) : (
         <button
-          onClick={() => setIsOpen(true)}
+          ref={buttonRef as React.RefObject<HTMLButtonElement>}
+          onClick={() => setIsOpen(!isOpen)}
           className={`inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all active:scale-95 select-none shadow-sm cursor-pointer ${
-            isDark 
-              ? 'bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 hover:border-amber-400 text-amber-300 shadow-amber-950/30' 
-              : 'bg-amber-50 hover:bg-amber-100 border-2 border-amber-300 hover:border-amber-400 text-amber-900 shadow-amber-500/10 font-bold'
+            isOpen 
+              ? 'ring-2 ring-amber-400 bg-amber-500/30 text-amber-200 border-amber-400'
+              : isDark 
+                ? 'bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 hover:border-amber-400 text-amber-300 shadow-amber-950/30' 
+                : 'bg-amber-50 hover:bg-amber-100 border-2 border-amber-300 hover:border-amber-400 text-amber-900 shadow-amber-500/10 font-bold'
           } ${className}`}
-          title="Klik untuk membuka Fakta Menarik (Tahukah Kamu?) seputar topik ini"
+          title="Klik untuk membuka Fakta Menarik (mode mini tepat di depan mata, halaman tetap bebas di-scroll)"
         >
           <Lightbulb className={`w-3.5 h-3.5 shrink-0 ${isDark ? 'text-amber-400' : 'text-amber-600'} animate-pulse`} />
           <span className="font-bold">Tahukah Kamu?</span>
@@ -322,40 +339,35 @@ export const QuickFactBadge: React.FC<QuickFactBadgeProps> = ({
         </button>
       )}
 
-      {/* Responsive Sheet Modal (Bottom Sheet on Mobile, Centered Dialog on Desktop) */}
+      {/* MODE MINI FLOATING DI DEPAN MATA (TANPA BACKDROP / TANPA MODE PENUH) */}
+      {/* TIDAK MENGUNCI SCROLL HALAMAN: Pengguna bebas scroll seluruh isi halaman kapan pun! */}
       {isOpen && (
         <div 
-          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-950/75 backdrop-blur-md animate-in fade-in duration-200 p-0 sm:p-4"
-          onClick={() => setIsOpen(false)}
+          ref={cardRef}
+          className="fixed top-20 sm:top-24 left-1/2 -translate-x-1/2 z-40 w-[calc(100vw-2rem)] sm:w-[480px] max-w-lg shadow-2xl animate-in slide-in-from-top-3 fade-in duration-200 select-none pointer-events-auto"
+          role="region"
+          aria-label="Widget Fakta Cepat - Tahukah Kamu"
         >
-          {/* Card Container */}
-          <div 
-            className={`w-full sm:max-w-lg rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[88vh] sm:max-h-[85vh] transition-all duration-300 animate-in slide-in-from-bottom sm:slide-in-from-bottom-0 sm:zoom-in-95 ${
+          <div className={`rounded-2xl shadow-2xl flex flex-col overflow-hidden border transition-colors ${
+            isDark 
+              ? 'bg-slate-900/98 border-amber-500/50 text-slate-100 shadow-2xl shadow-black/90 ring-1 ring-amber-500/40 backdrop-blur-md' 
+              : 'bg-white/98 border-2 border-amber-400 text-slate-900 shadow-2xl shadow-amber-950/20 backdrop-blur-md'
+          }`}>
+            
+            {/* Header Mini: Di Depan Mata */}
+            <div className={`px-4 py-3 border-b flex items-center justify-between gap-3 shrink-0 ${
               isDark 
-                ? 'bg-slate-900 border-t sm:border border-amber-500/40 text-slate-100 shadow-amber-950/50' 
-                : 'bg-white border-t-2 sm:border-2 border-amber-400 text-slate-900 shadow-amber-500/15'
-            }`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Mobile Touch Drag Handle Bar */}
-            <div className="sm:hidden flex justify-center pt-2.5 pb-1 shrink-0">
-              <div className={`w-12 h-1.5 rounded-full ${isDark ? 'bg-slate-700' : 'bg-slate-300'}`} />
-            </div>
-
-            {/* Modal Header */}
-            <div className={`p-4 sm:p-5 border-b flex items-center justify-between gap-3 shrink-0 ${
-              isDark 
-                ? 'bg-gradient-to-r from-amber-950/40 via-slate-900 to-slate-900 border-slate-800' 
+                ? 'bg-gradient-to-r from-amber-950/50 via-slate-900 to-slate-900 border-slate-800' 
                 : 'bg-gradient-to-r from-amber-50 via-white to-white border-amber-100'
             }`}>
-              <div className="flex items-center gap-3 min-w-0">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-md ${
-                  isDark ? 'bg-amber-500/20 border border-amber-500/40 text-amber-300' : 'bg-amber-100 border border-amber-300 text-amber-700 shadow-amber-500/10'
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${
+                  isDark ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'bg-amber-100 text-amber-700 border border-amber-300'
                 }`}>
-                  <Lightbulb className="w-5 h-5 text-amber-500" />
+                  <Lightbulb className="w-4 h-4 text-amber-500" />
                 </div>
                 <div className="min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
+                  <div className="flex items-center gap-1.5 flex-wrap">
                     <span className={`text-[11px] font-black uppercase tracking-wider ${isDark ? 'text-amber-400' : 'text-amber-700'}`}>
                       Tahukah Kamu?
                     </span>
@@ -365,158 +377,144 @@ export const QuickFactBadge: React.FC<QuickFactBadgeProps> = ({
                       {currentFactIndex + 1} dari {facts.length}
                     </span>
                   </div>
-                  <h3 className={`text-sm font-bold truncate mt-0.5 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                  <h3 className={`text-xs sm:text-sm font-bold truncate mt-0.5 ${isDark ? 'text-white' : 'text-slate-900'}`}>
                     {currentFact.category}
                   </h3>
                 </div>
               </div>
 
-              {/* Close Button: Large tap target for mobile thumbs */}
+              {/* Close Button */}
               <button
                 onClick={() => setIsOpen(false)}
-                className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors shrink-0 active:scale-90 ${
+                className={`p-1.5 sm:p-2 rounded-xl flex items-center justify-center transition-colors active:scale-90 ${
                   isDark 
-                    ? 'bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white' 
-                    : 'bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 border border-slate-200'
+                    ? 'bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white' 
+                    : 'bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-200'
                 }`}
-                aria-label="Tutup Fakta"
-                title="Tutup Modal"
+                title="Tutup (Esc)"
+                aria-label="Tutup"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Modal Body: Smooth Scrollable Content */}
-            <div className="p-4 sm:p-6 space-y-4 overflow-y-auto overscroll-contain flex-1">
+            {/* Body Mini Card: Scrollable mandiri dengan pembatasan tinggi rapi */}
+            <div className="p-3.5 sm:p-4 space-y-3 overflow-y-auto max-h-[300px] sm:max-h-[340px] custom-scrollbar overscroll-contain select-text">
               
-              {/* Fact Highlight Banner */}
-              <div className={`p-4 rounded-2xl border transition-colors ${
+              {/* Highlight Fakta */}
+              <div className={`p-3 rounded-xl border ${
                 isDark 
-                  ? 'bg-amber-500/10 border-amber-500/30 text-amber-100 shadow-sm' 
-                  : 'bg-amber-50 border-2 border-amber-300 text-amber-950 shadow-sm'
+                  ? 'bg-amber-500/10 border-amber-500/30 text-amber-100' 
+                  : 'bg-amber-50/90 border-2 border-amber-300 text-amber-950'
               }`}>
-                <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider mb-2">
+                <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider mb-1">
                   <Sparkles className={`w-3.5 h-3.5 ${isDark ? 'text-amber-400' : 'text-amber-600'}`} />
                   <span className={isDark ? 'text-amber-400' : 'text-amber-800'}>
                     {currentFact.badge || 'Sorotan Fakta'}
                   </span>
                 </div>
-                <h4 className={`text-base sm:text-lg font-extrabold leading-snug mb-2 ${
-                  isDark ? 'text-white' : 'text-slate-950'
-                }`}>
+                <h4 className={`text-xs sm:text-sm font-extrabold leading-snug mb-1.5 ${isDark ? 'text-white' : 'text-slate-950'}`}>
                   {currentFact.title}
                 </h4>
-                <p className={`text-xs sm:text-sm leading-relaxed font-semibold italic ${
-                  isDark ? 'text-amber-200/90' : 'text-amber-900'
-                }`}>
+                <p className={`text-[11px] sm:text-xs leading-relaxed italic font-medium ${isDark ? 'text-amber-200/90' : 'text-amber-900'}`}>
                   "{currentFact.fact}"
                 </p>
               </div>
 
-              {/* In-Depth Explanation */}
+              {/* Penjelasan Ringkas & Padat */}
               <div>
-                <h5 className={`text-xs font-bold uppercase tracking-wider mb-2 flex items-center gap-1.5 ${
-                  isDark ? 'text-slate-400' : 'text-slate-700'
+                <div className={`text-[10px] font-bold uppercase tracking-wider mb-1 flex items-center gap-1 ${
+                  isDark ? 'text-slate-400' : 'text-slate-600'
                 }`}>
-                  <BookOpen className="w-3.5 h-3.5 text-blue-500" />
-                  <span>Penjelasan Mendalam:</span>
-                </h5>
-                <p className={`text-xs sm:text-sm leading-relaxed p-4 rounded-xl border ${
+                  <BookOpen className="w-3 h-3 text-cyan-400" />
+                  <span>Penjelasan:</span>
+                </div>
+                <p className={`text-[11px] sm:text-xs leading-relaxed p-2.5 rounded-lg border ${
                   isDark 
                     ? 'bg-slate-850/80 border-slate-800 text-slate-200' 
-                    : 'bg-slate-50 border border-slate-200 text-slate-800 font-medium'
+                    : 'bg-slate-50 border border-slate-200 text-slate-700'
                 }`}>
                   {currentFact.deepExplanation}
                 </p>
               </div>
 
-              {/* Source Verification Citation */}
-              <div className={`p-3 sm:p-3.5 rounded-xl border text-[11px] flex items-start gap-2.5 ${
+              {/* Sumber Akademik */}
+              <div className={`p-2 rounded-lg border text-[10px] flex items-start gap-1.5 ${
                 isDark 
                   ? 'bg-slate-950/80 border-slate-800 text-slate-400' 
-                  : 'bg-emerald-50/60 border border-emerald-200 text-emerald-950'
+                  : 'bg-emerald-50 border border-emerald-200 text-emerald-950'
               }`}>
-                <Award className={`w-4 h-4 shrink-0 mt-0.5 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />
-                <div className="leading-relaxed">
-                  <span className={`font-bold ${isDark ? 'text-emerald-300' : 'text-emerald-800'}`}>
-                    Sumber Terverifikasi:{' '}
-                  </span>
+                <Award className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                <div className="leading-snug">
+                  <span className={`font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-800'}`}>Sumber: </span>
                   <span className="italic">{currentFact.source}</span>
-                  {currentFact.year && (
-                    <span className="font-bold"> ({currentFact.year})</span>
-                  )}
+                  {currentFact.year && <span className="font-bold"> ({currentFact.year})</span>}
                 </div>
               </div>
             </div>
 
-            {/* Modal Footer Controls: Mobile optimized with responsive layout */}
-            <div className={`p-3.5 sm:p-4 border-t flex flex-wrap sm:flex-nowrap items-center justify-between gap-2.5 shrink-0 ${
-              isDark 
-                ? 'bg-slate-950 border-slate-800' 
-                : 'bg-slate-50 border-slate-200'
+            {/* Footer Mini */}
+            <div className={`px-3 py-2 border-t flex items-center justify-between gap-1.5 shrink-0 ${
+              isDark ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-slate-200'
             }`}>
-              {/* Copy Quote Button */}
+              {/* Salin Fakta */}
               <button
                 onClick={handleCopy}
-                className={`px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors border active:scale-95 ${
+                className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold flex items-center gap-1 border transition-colors active:scale-95 ${
                   isDark 
-                    ? 'bg-slate-850 hover:bg-slate-800 text-slate-200 border-slate-700' 
-                    : 'bg-white hover:bg-slate-100 text-slate-800 border-slate-300 shadow-sm'
+                    ? 'bg-slate-850 text-slate-200 border-slate-700 hover:bg-slate-800' 
+                    : 'bg-white text-slate-800 border-slate-300 hover:bg-slate-100 shadow-sm'
                 }`}
-                title="Salin ringkasan fakta ke clipboard"
+                title="Salin ringkasan ke clipboard"
               >
                 {copied ? (
                   <>
-                    <Check className="w-3.5 h-3.5 text-emerald-500" />
-                    <span className="text-emerald-600 font-bold">Tersalin!</span>
+                    <Check className="w-3 h-3 text-emerald-500" />
+                    <span className="text-emerald-500 font-bold">Tersalin!</span>
                   </>
                 ) : (
                   <>
-                    <Share2 className="w-3.5 h-3.5 text-blue-500" />
+                    <Share2 className="w-3 h-3 text-cyan-400" />
                     <span>Salin</span>
                   </>
                 )}
               </button>
 
-              {/* Navigation pagination if multiple facts */}
+              {/* Navigasi Fakta Sebelumnya & Selanjutnya */}
               {facts.length > 1 && (
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1">
                   <button
                     onClick={handlePrev}
-                    className={`p-2 rounded-xl border transition-colors active:scale-90 ${
-                      isDark 
-                        ? 'bg-slate-850 hover:bg-slate-800 text-slate-200 border-slate-700' 
-                        : 'bg-white hover:bg-slate-100 text-slate-800 border-slate-300 shadow-sm'
+                    className={`p-1 sm:p-1.5 rounded-lg border transition-colors active:scale-90 ${
+                      isDark ? 'bg-slate-850 text-slate-300 border-slate-700' : 'bg-white text-slate-700 border-slate-300'
                     }`}
                     aria-label="Fakta Sebelumnya"
                     title="Fakta Sebelumnya"
                   >
-                    <ChevronLeft className="w-4 h-4" />
+                    <ChevronLeft className="w-3.5 h-3.5" />
                   </button>
 
-                  <span className={`text-xs font-bold px-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                    {currentFactIndex + 1} / {facts.length}
+                  <span className={`text-[11px] font-bold px-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                    {currentFactIndex + 1}/{facts.length}
                   </span>
 
                   <button
                     onClick={handleNext}
-                    className={`p-2 rounded-xl border transition-colors active:scale-90 ${
-                      isDark 
-                        ? 'bg-slate-850 hover:bg-slate-800 text-slate-200 border-slate-700' 
-                        : 'bg-white hover:bg-slate-100 text-slate-800 border-slate-300 shadow-sm'
+                    className={`p-1 sm:p-1.5 rounded-lg border transition-colors active:scale-90 ${
+                      isDark ? 'bg-slate-850 text-slate-300 border-slate-700' : 'bg-white text-slate-700 border-slate-300'
                     }`}
                     aria-label="Fakta Selanjutnya"
                     title="Fakta Selanjutnya"
                   >
-                    <ChevronRight className="w-4 h-4" />
+                    <ChevronRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
               )}
 
-              {/* Close Button */}
+              {/* Tombol Tutup Mini */}
               <button
                 onClick={() => setIsOpen(false)}
-                className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-600/25 transition-all active:scale-95 ml-auto sm:ml-0"
+                className="px-3.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold shadow-sm transition-all active:scale-95"
               >
                 Tutup
               </button>
