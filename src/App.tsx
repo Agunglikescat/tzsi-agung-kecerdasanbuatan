@@ -12,6 +12,7 @@ import { SearchModal } from './components/SearchModal';
 import { CosmicParticlesBackground } from './components/CosmicParticlesBackground';
 import { ModuleMenuDrawer } from './components/ModuleMenuDrawer';
 import { ModuleFooterNavigator } from './components/ModuleFooterNavigator';
+import { OpeningSplashAnimation } from './components/OpeningSplashAnimation';
 import { 
   ArrowUp 
 } from 'lucide-react';
@@ -97,6 +98,9 @@ export default function App() {
 
   return (
     <div className={`min-h-screen ${theme === 'dark' ? 'bg-[#060814] text-slate-100' : 'bg-slate-50 text-slate-800'} flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-950 relative overflow-x-hidden transition-colors duration-300`}>
+      {/* Opening Intro Reveal Animation when site is opened */}
+      <OpeningSplashAnimation />
+
       {/* Dynamic Animated Cosmic Particles & Glowing Bokeh Background */}
       <CosmicParticlesBackground />
 
@@ -113,8 +117,8 @@ export default function App() {
       {/* Main Content Sections: Modular Mode (Buka per menu tanpa scroll panjang) or Scroll All */}
       <main className="flex-1 pb-16 md:pb-8 relative z-10">
         {modularView ? (
-          // MODULAR VIEW: Hanya membuka bab yang dipilih pengguna, bebas scroll panjang
-          <div className="animate-in fade-in duration-300">
+          // MODULAR VIEW: Hanya membuka bab yang dipilih pengguna, bebas scroll panjang dengan animasi muncul
+          <div key={activeSection} className="animate-section-open">
             {activeSection === 'hero' && (
               <Hero onNavigate={handleSelectModule} />
             )}

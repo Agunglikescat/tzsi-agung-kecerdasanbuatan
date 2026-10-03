@@ -39,7 +39,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Top Tag */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-6 animate-emerge">
           <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold backdrop-blur-sm transition-colors ${
             isDark 
               ? 'bg-blue-900/60 border border-blue-500/40 text-blue-200 shadow-sm' 
@@ -62,7 +62,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         </div>
 
         {/* Main Title */}
-        <div className="text-center max-w-4xl mx-auto">
+        <div className="text-center max-w-4xl mx-auto animate-emerge-delay-1">
           <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight ${
             isDark ? 'text-white' : 'text-slate-950'
           }`}>
@@ -93,7 +93,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           </p>
 
           {/* Quick Action CTA buttons */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3 animate-emerge-delay-2">
             <button
               onClick={() => onNavigate('konsep')}
               className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-lg shadow-blue-600/30 transition-all flex items-center gap-2 group ring-2 ring-blue-500/20"
@@ -138,7 +138,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         </div>
 
         {/* 4 Feature Highlights Grid */}
-        <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-emerge-delay-3">
           <div 
             onClick={() => onNavigate('konsep')}
             className={`p-5 rounded-2xl transition-all cursor-pointer group shadow-sm ${

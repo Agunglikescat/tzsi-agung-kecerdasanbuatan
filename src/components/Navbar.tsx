@@ -63,7 +63,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 animate-nav-slide ${
         isScrolled
           ? 'bg-slate-950/95 backdrop-blur-md shadow-xl shadow-black/50 border-b border-slate-800'
           : 'bg-slate-950/90 backdrop-blur-sm border-b border-slate-800/70'
