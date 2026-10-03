@@ -10,7 +10,6 @@ import {
   BookOpen
 } from 'lucide-react';
 import { AgungLogo } from './AgungLogo';
-import { QuickFactBadge } from './QuickFactModal';
 import { AnimatedLetterText } from './AnimatedLetterText';
 import { useTheme } from '../context/ThemeContext';
 
@@ -58,7 +57,6 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             <ShieldCheck className={`w-3.5 h-3.5 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`} />
             <span>Berdasarkan Sumber Valid & Nobel 2024</span>
           </div>
-          <QuickFactBadge sectionId="hero" variant="inline" />
         </div>
 
         {/* Main Title */}
